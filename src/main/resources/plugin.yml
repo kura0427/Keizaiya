@@ -1,0 +1,44 @@
+name: Second
+version: ${project.version}
+main: keizaiya.second.Potato
+api-version: 1.14
+
+commands:
+  country:
+    description: "国関連の処理に関するコマンド"
+    usage: /<command>
+  menu:
+    description: "メニューを開くコマンドです"
+    usage: /<command>
+  chatmode:
+    description: "チャットモードを変更します。"
+    usage: /<command>
+  admin:
+    description: "管理者専用コマンド"
+    usage: /<command>
+    permission: inferno.admin
+    permission-message: "これは管理者が使うコマンドです。よく見つけたね^^"
+  chat:
+    description: "チャット関連の設定です"
+    usage: /<command>
+  Print:
+    description: "通貨コマンド"
+    usage: /<command>
+  ToolColor:
+    description: "メニューを開くコマンドです"
+    usage: /<command>
+  playerinfo:
+    description: "メニューを開くコマンドです"
+    usage: /<command>
+  selfkick:
+    description: "メニューを開くコマンドです"
+    usage: /<command>
+  test:
+    description: "テストコマンド(プラグイン開発用)"
+    usage: /<command>
+
+
+permissions:
+  inferno.admin:
+    description: "adminコマンドの権限です"
+    default: op
