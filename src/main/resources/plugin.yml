@@ -18,9 +18,6 @@ commands:
     usage: /<command>
     permission: inferno.admin
     permission-message: "これは管理者が使うコマンドです。よく見つけたね^^"
-  chat:
-    description: "チャット関連の設定です"
-    usage: /<command>
   Print:
     description: "通貨コマンド"
     usage: /<command>

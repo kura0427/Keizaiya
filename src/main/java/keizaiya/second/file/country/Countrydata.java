@@ -225,7 +225,6 @@ public class Countrydata {
 
     public static List<String> getpermissionList(Player player, String tag){
         if(tag.contains("null") == false) {
-            System.out.println(tag);
             if (getOnlinemember(tag).contains(player)) {
                 YamlConfiguration yml = loadCountry(tag);
                 String uuid = player.getUniqueId().toString();
@@ -445,6 +444,11 @@ public class Countrydata {
             }
         }
         return list;
+    }
+
+    public static void removepoint(String tag ,Integer number){
+        Integer now = getCountrypoint(tag);
+        setCountrypoint(tag,now - number);
     }
 
 

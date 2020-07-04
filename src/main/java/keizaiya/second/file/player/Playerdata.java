@@ -2,6 +2,7 @@ package keizaiya.second.file.player;
 
 import keizaiya.second.Potato;
 import keizaiya.second.file.Yamlfile;
+import keizaiya.second.file.country.Countrydata;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,8 +37,6 @@ public class Playerdata {
     public static boolean CheckPlayerDataFile(Player player){
         String UUID = player.getUniqueId().toString();
         File file = new File("KeizaiyaMain/Playerdata/" + UUID + ".yml");
-        System.out.println(file);
-        System.out.println(file.exists());
         return file.exists();
     }
     public static void CheckFile(){
@@ -86,7 +85,11 @@ public class Playerdata {
         YamlConfiguration yml = loadfile(player);
         Integer now = yml.getInt("chat");
         Integer chenge = 0;
-        if(now == 0){ chenge = CountryNomber(player);}
+        if(now == 0){
+            if(Playerdata.getNowCountry(player).contains("null") == false){
+                chenge = CountryNomber(player);
+            }
+        }
         yml.set("chat",chenge);
         savefile(player,yml);
     }
@@ -161,7 +164,21 @@ public class Playerdata {
         }
         return 0;
     }
-    //yeah^^
+
+
+    public static Integer getakiCountry(Player player){
+        for(int i = 1;i <= 3;i++){
+            if(getCountrytag(player,i).contains("null")){
+                return i;
+            }
+        }
+        for(int i = 1;i <= 3;i++){
+            if(Countrydata.checkpermissioncountry(player,"head",getCountrytag(player,i)) == false){
+                return i;
+            }
+        }
+        return 666;
+    }
 
 
 }

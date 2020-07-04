@@ -19,45 +19,85 @@ public class commandtab implements TabCompleter {
             Player player = (Player) sender;
             if (args.length == 1){
                 cmdlist = new ArrayList<>();
-                cmdlist.add("Create");
-                cmdlist.add("Invite");
-                cmdlist.add("chat");
-                cmdlist.add("permission");
-                cmdlist.add("Tp");
-                cmdlist.add("item");
-                cmdlist.add("remove");
-                cmdlist.add("delete");
-                cmdlist.add("nickname");
-                cmdlist.add("REconsent");
-                cmdlist.add("Inconsent");
+                if(args[0].length() <= 2){
+                    if("tp".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("Tp");
+                    }
+                }if(args[0].length() <= 4){
+                    if("item".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("item");
+                    }if("chat".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("chat");
+                    }
+                }if(args[0].length() <= 6){
+                    if("create".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("Create");
+                    }if("invite".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("Invite");
+                    }if("remove".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("remove");
+                    }if("delete".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("delete");
+                    }
+                }if(args[0].length() <= 8){
+                    if("nickname".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("nickname");
+                    }
+                }if(args[0].length() <= 9){
+                    if("reconsent".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("REconsent");
+                    }if("inconsent".substring(0,args[0].length()).contains(args[0])) {
+                        cmdlist.add("Inconsent");
+                    }
+                }if(args[0].length() <= 10) {
+                    if ("permission".substring(0, args[0].length()).contains(args[0])) {
+                        cmdlist.add("permission");
+                    }
+                }
                 return cmdlist;
             }else if(args.length == 2){
                 if(args[0].equalsIgnoreCase("invite")){
                     cmdlist = new ArrayList<>();
                     for(Player p: Bukkit.getOnlinePlayers()){
-                        cmdlist.add(p.getDisplayName());
+                        if(p.getDisplayName().contains(args[1])) {
+                            cmdlist.add(p.getDisplayName());
+                        }
                     }
                     return cmdlist;
                 }else if(args[0].equalsIgnoreCase("tp")){
                     cmdlist = new ArrayList<>();
-                    cmdlist.add("set");
-                    cmdlist.add("1");
-                    cmdlist.add("2");
+                    if("set".contains(args[1])) {
+                        cmdlist.add("set");
+                    }if("1".contains(args[1])) {
+                        cmdlist.add("1");
+                    }if("2".contains(args[1])) {
+                        cmdlist.add("2");
+                    }
+                    return cmdlist;
                 }else if(args[0].equalsIgnoreCase("item")){
                     cmdlist = new ArrayList<>();
-                    cmdlist.add("card");
-                    cmdlist.add("country");
-                    cmdlist.add("banner");
-                }else if(args[0].equalsIgnoreCase("remove")){
-                    cmdlist = new ArrayList<>();
-                    for(Player p: Countrydata.getOnlinemember(Playerdata.getNowCountry(player))){
-                        cmdlist.add(p.getDisplayName());
+                    if("card".contains(args[1])) {
+                        cmdlist.add("card");
+                    }if("country".contains(args[1])) {
+                        cmdlist.add("country");
+                    }if("banner".contains(args[1])) {
+                        cmdlist.add("banner");
                     }
                     return cmdlist;
                 }else if(args[0].equalsIgnoreCase("remove")){
                     cmdlist = new ArrayList<>();
                     for(Player p: Countrydata.getOnlinemember(Playerdata.getNowCountry(player))){
-                        cmdlist.add(p.getDisplayName());
+                        if(p.getDisplayName().contains(args[1])) {
+                            cmdlist.add(p.getDisplayName());
+                        }
+                    }
+                    return cmdlist;
+                }else if(args[0].equalsIgnoreCase("remove")){
+                    cmdlist = new ArrayList<>();
+                    for(Player p: Countrydata.getOnlinemember(Playerdata.getNowCountry(player))){
+                        if(p.getDisplayName().contains(args[1])) {
+                            cmdlist.add(p.getDisplayName());
+                        }
                     }
                     return cmdlist;
                 }

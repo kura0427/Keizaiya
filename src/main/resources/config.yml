@@ -3,6 +3,7 @@ pointparbreak: 350
 TPtime: 200
 invitetime: 1200
 removetime: 1200
+cardtimer: 12000
 breaklist:
   - "STONE"
   - "GRANITE"
@@ -81,3 +82,19 @@ ideology:
   peace: "平和主義"
   peace2: "平和主義Lv2"
   peace3: "平和主義Lv3"
+
+joinmessage:
+  - "&e%Player%が参加しました"
+  - "&e%Player%がやってきました"
+  - "&e%Player%ががサーバーに滑り込みました"
+  - "&e%Player%がただいま着陸いたしました"
+  - "&e%Player% 戦争ですか！?"
+  - "&eやぁ %Player% 君。ビサ持ってきたよね？"
+  - "&e%Player%さん、ようこそ"
+  - "&e%Player%が時間を炉にくべにきました"
+  - "&eあ！ 野生の%Player%が飛び出してきた！"
+  - "&eやったー、%Player%がキター"
+  - "&e%Player% ^^"
+  - "&e%Player% (´・ω・｀)"
+  - "&e%Player%をあがめよ"
+  - "&e%Player%さん、ポテトタイムはどうしたんですか"

@@ -44,23 +44,22 @@ public class authorcommand {
                     }catch (Exception e){}
                     if (player2 != null) {
                         System.out.println("^^");
-                        if (Countrydata.getOnlinemember(Playerdata.getNowCountry(player)).contains(player2)) {
-                            String message = "§8=*=*=*=*= §7Info §8=*=*=*=*=\n";
-                            message = message + "§7名前 §8>>§7§l" + args[0] + "\n";
-                            if(Playerdata.getCountrytag(player2,1).contains("null") == false){
-                                message = message + "§8=*=*=*= §7Account No.1 §8=*=*=*=\n";
-                                message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,1));
-                            }if(Playerdata.getCountrytag(player2,2).contains("null") == false){
-                                message = message + "\n§8=*=*=*= §7Account No.2 §8=*=*=*=\n";
-                                message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,2));
-                            }if(Playerdata.getCountrytag(player2,3).contains("null") == false){
-                                message = message + "\n§8=*=*=*= §7Account No.3 §8=*=*=*=\n";
-                                message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,3));
-                            }
-                            player.sendMessage(message);
+                        String message = "§8=*=*=*=*= §7Info §8=*=*=*=*=\n";
+                        message = message + "§7名前 §8>>§7§l" + args[0] + "\n";
+                        if(Playerdata.getCountrytag(player2,1).contains("null") == false){
+                            message = message + "§8=*=*=*= §7Account No.1 §8=*=*=*=\n";
+                            message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,1));
+                        }if(Playerdata.getCountrytag(player2,2).contains("null") == false){
+                            message = message + "\n§8=*=*=*= §7Account No.2 §8=*=*=*=\n";
+                            message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,2));
+                        }if(Playerdata.getCountrytag(player2,3).contains("null") == false){
+                            message = message + "\n§8=*=*=*= §7Account No.3 §8=*=*=*=\n";
+                            message = message + Countrydata.getlowInfo(Playerdata.getCountrytag(player2,3));
                         }
+                        player.sendMessage(message);
                     }
                 }
+
             }if(cmd.getName().equalsIgnoreCase("selfkick")){
                 player.kickPlayer("あなたをKickしました ^^");
             }

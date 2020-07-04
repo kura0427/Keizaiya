@@ -117,9 +117,12 @@ public class countrycommand {
                                         }
                                         System.out.println(amont);
                                     }
-                                    ItemStack stack = item.getIdeorogycard(Countrydata.getIdeology(Playerdata.getNowCountry(player)));
-                                    stack.setAmount(amont);
-                                    player.getInventory().addItem(stack);
+                                    if(Countrydata.getCountrypoint(Playerdata.getNowCountry(player))-amont >= 0){
+                                        ItemStack stack = item.getIdeorogycard(Countrydata.getIdeology(Playerdata.getNowCountry(player)));
+                                        stack.setAmount(amont);
+                                        player.getInventory().addItem(stack);
+                                        Countrydata.removepoint(Playerdata.getNowCountry(player),amont);
+                                    }else{player.sendMessage("§8[§7System§8] §7ポイントが足りません");}
                                 }
                             }if(args[1].equalsIgnoreCase("country")){
                                 if(Countrydata.checkpermission(player,"item")){
@@ -131,17 +134,25 @@ public class countrycommand {
                                         }
                                         System.out.println(amont);
                                     }
-                                    ItemStack stack = item.getcard();
-                                    stack.setAmount(amont);
-                                    player.getInventory().addItem(stack);
+                                    if(Countrydata.getCountrypoint(Playerdata.getNowCountry(player))-amont >= 0){
+                                        ItemStack stack = item.getcard();
+                                        stack.setAmount(amont);
+                                        player.getInventory().addItem(stack);
+                                        Countrydata.removepoint(Playerdata.getNowCountry(player),amont);
+                                    }else{player.sendMessage("§8[§7System§8] §7ポイントが足りません");}
                                 }
                             }if(args[1].equalsIgnoreCase("banner")){
                                 if(player.getInventory().getItemInMainHand().getItemMeta() instanceof BannerMeta){
                                     if(player.getInventory().getItemInMainHand().getAmount() > 64){
                                         player.sendMessage("§8[§7System§8] §7これ以上は増やせません。");
                                     }else {
-                                        player.getInventory().getItemInMainHand().setAmount(
-                                                player.getInventory().getItemInMainHand().getAmount() + 16);
+                                        if(Countrydata.getCountrypoint(Playerdata.getNowCountry(player))-1 >= 0) {
+                                            player.getInventory().getItemInMainHand().setAmount(
+                                                    player.getInventory().getItemInMainHand().getAmount() + 16);
+                                            Countrydata.removepoint(Playerdata.getNowCountry(player),1);
+                                        }else{
+                                            player.sendMessage("§8[§7System§8] §7ポイントが足りません");
+                                        }
                                     }
                                 }
                             }

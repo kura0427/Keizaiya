@@ -1,13 +1,14 @@
 package keizaiya.second;
 
-import keizaiya.second.author.admincommandtab;
-import keizaiya.second.author.authorclick;
-import keizaiya.second.author.authorcommand;
-import keizaiya.second.author.commandtab;
+import keizaiya.second.armmy.armmer;
+import keizaiya.second.armmy.armmy;
+import keizaiya.second.author.*;
 import keizaiya.second.chat.chat;
 import keizaiya.second.chat.chatcommand;
+import keizaiya.second.chat.chengewoad;
 import keizaiya.second.file.Admin.Admin;
 import keizaiya.second.file.Admin.adminfile;
+import keizaiya.second.file.Yamlfile;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.countrycommand;
 import keizaiya.second.file.country.ideology;
@@ -18,14 +19,20 @@ import keizaiya.second.inventory.menu;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -35,9 +42,8 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public final class Potato extends JavaPlugin implements Listener {
 
@@ -65,6 +71,7 @@ public final class Potato extends JavaPlugin implements Listener {
 
         point.updatelist();
         adminfile.checkAdmindata();
+        chengewoad.checkfile();
 
 
         getServer().getPluginManager().registerEvents(this,this);
@@ -82,7 +89,8 @@ public final class Potato extends JavaPlugin implements Listener {
             Playerdata.CreatePlayerdata(event.getPlayer());
         }
         servermember.checkmember(event.getPlayer());
-        event.setJoinMessage(event.getPlayer().getDisplayName() + "が参加しました。");
+        event.setJoinMessage(joinmessage.joinmessage()
+        .replace("&","§").replace("%Player%",event.getPlayer().getDisplayName()));
     }
 
     @EventHandler
@@ -105,6 +113,8 @@ public final class Potato extends JavaPlugin implements Listener {
     public void click(PlayerInteractEvent e){
         ideology.clickideologycard(e);
         authorclick.authorclick(e);
+        armmy.used(e);
+        armmer.click(e);
     }
 
     @EventHandler
@@ -114,6 +124,11 @@ public final class Potato extends JavaPlugin implements Listener {
                 Countrydata.addEntity(Playerdata.getNowCountry(e.getEntity().getKiller()), e.getEntity().getKiller());
             }
         }
+    }
+
+    @EventHandler
+    public void damegeEvent(EntityDamageByEntityEvent e){
+        armmer.damege(e);
     }
 
     @EventHandler
@@ -139,7 +154,17 @@ public final class Potato extends JavaPlugin implements Listener {
                     menu.opengui(p);
                 }
             }if(cmd.getName().equalsIgnoreCase("test")){
-
+                InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
+                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                YamlConfiguration yml = new YamlConfiguration();
+                try {
+                    yml.load(br);
+                    music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InvalidConfigurationException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return true;

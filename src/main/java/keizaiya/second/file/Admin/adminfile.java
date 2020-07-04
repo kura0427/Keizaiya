@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -120,4 +122,5 @@ public class adminfile {
         }
         return false;
     }
+
 }
