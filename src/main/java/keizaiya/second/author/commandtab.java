@@ -53,6 +53,10 @@ public class commandtab implements TabCompleter {
                     if ("permission".substring(0, args[0].length()).contains(args[0])) {
                         cmdlist.add("permission");
                     }
+                }if("religion".contains(args[0])) {
+                    cmdlist.add("religion");
+                }if("promote".contains(args[0])) {
+                    cmdlist.add("promote");
                 }
                 return cmdlist;
             }else if(args.length == 2){
@@ -100,6 +104,17 @@ public class commandtab implements TabCompleter {
                         }
                     }
                     return cmdlist;
+                }
+            }else if(args.length == 3){
+                if(args[0].equalsIgnoreCase("item")){
+                    if(args[1].equalsIgnoreCase("banner")){
+                        if("set".contains(args[2])) {
+                            cmdlist.add("set");
+                        }if("get".contains(args[2])) {
+                            cmdlist.add("get");
+                        }
+                        return cmdlist;
+                    }
                 }
             }
         }

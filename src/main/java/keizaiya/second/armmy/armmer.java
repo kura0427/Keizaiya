@@ -54,6 +54,24 @@ public class armmer {
         Player player = e.getPlayer();
         if (e.getItem() != null) {
             Float name = e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Potato.plugin, "armm"), PersistentDataType.FLOAT);
+            List<String> love = e.getItem().getLore();
+            Float damageup = 0.00f;
+            if(name == null){
+                if(love != null) {
+                    for (String yeah : love) {
+                        if (yeah.contains("被ダメージ倍率")) {
+                            String damege = yeah.substring(12, yeah.length());
+                            damege = damege.replace("§e", "");
+                            try {
+                                damageup = Float.valueOf(damege);
+
+                            } catch (Exception es) {
+                                System.out.println(es);
+                            }
+                        }
+                    }
+                }
+            }
             Random rnd = new Random();
             List<String> lore = new ArrayList<>();
             if(Diamondarmmor.contains(e.getMaterial())) {
@@ -62,6 +80,9 @@ public class armmer {
                     Integer before = rnd.nextInt(51);
                     Float data = Float.valueOf((before + 50));
                     data = data / 100;
+                    if(damageup != 0.00f){
+                        data = damageup;
+                    }
                     meta.getPersistentDataContainer().set(new NamespacedKey(Potato.plugin,"armm") , PersistentDataType.FLOAT, data);
                     lore.add("§7被ダメージ倍率: §e" + String.valueOf(data));
                     meta.setLore(lore);
@@ -73,6 +94,9 @@ public class armmer {
                     Integer before = rnd.nextInt(21);
                     Float data = Float.valueOf((before + 35));
                     data = data / 100;
+                    if(damageup != 0.00f){
+                        data = damageup;
+                    }
                     meta.getPersistentDataContainer().set(new NamespacedKey(Potato.plugin,"armm") , PersistentDataType.FLOAT, data);
                     lore.add("§7被ダメージ倍率: §e" + String.valueOf(data));
                     meta.setLore(lore);
@@ -84,6 +108,9 @@ public class armmer {
                     Integer before = rnd.nextInt(31);
                     Float data = Float.valueOf((before + 45));
                     data = data / 100;
+                    if(damageup != 0.00f){
+                        data = damageup;
+                    }
                     meta.getPersistentDataContainer().set(new NamespacedKey(Potato.plugin,"armm") , PersistentDataType.FLOAT, data);
                     lore.add("§7被ダメージ倍率: §e" + String.valueOf(data));
                     meta.setLore(lore);
@@ -95,6 +122,9 @@ public class armmer {
                     Integer before = rnd.nextInt(21);
                     Float data = Float.valueOf((before + 40));
                     data = data / 100;
+                    if(damageup != 0.00f){
+                        data = damageup;
+                    }
                     meta.getPersistentDataContainer().set(new NamespacedKey(Potato.plugin,"armm") , PersistentDataType.FLOAT, data);
                     lore.add("§7被ダメージ倍率: §e" + String.valueOf(data));
                     meta.setLore(lore);
@@ -106,6 +136,9 @@ public class armmer {
                     Integer before = rnd.nextInt(6);
                     Float data = Float.valueOf((before + 30));
                     data = data / 100;
+                    if(damageup != 0.00f){
+                        data = damageup;
+                    }
                     meta.getPersistentDataContainer().set(new NamespacedKey(Potato.plugin,"armm") , PersistentDataType.FLOAT, data);
                     lore.add("§7被ダメージ倍率: §e" + String.valueOf(data));
                     meta.setLore(lore);

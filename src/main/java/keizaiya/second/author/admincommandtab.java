@@ -37,6 +37,14 @@ public class admincommandtab implements TabCompleter {
                     cmdlist.add("word");
                 }if("remove".contains(args[0])) {
                     cmdlist.add("remove");
+                }if("keepinventory".contains(args[0])) {
+                    cmdlist.add("keepinventory");
+                }if("tp".contains(args[0])) {
+                    cmdlist.add("tp");
+                }if("villager".contains(args[0])) {
+                    cmdlist.add("villager");
+                }if("announce".contains(args[0])) {
+                    cmdlist.add("announce");
                 }
                 return cmdlist;
             }else if(args.length >= 2){
@@ -101,6 +109,14 @@ public class admincommandtab implements TabCompleter {
                             cmdlist.add("sethead");
                         }if("getcard".contains(args[1])) {
                             cmdlist.add("getcard");
+                        }if("setreligion".contains(args[1])) {
+                            cmdlist.add("setreligion");
+                        }if("getreligioncard".contains(args[1])) {
+                            cmdlist.add("getreligioncard");
+                        }if("tp".contains(args[1])) {
+                            cmdlist.add("tp");
+                        }if("banner".contains(args[1])) {
+                            cmdlist.add("banner");
                         }
                         return cmdlist;
                     }else if(args.length == 3){
@@ -133,24 +149,50 @@ public class admincommandtab implements TabCompleter {
                                 cmdlist.add("平和を守るための戦争");
                             }
                             return cmdlist;
+                        }if(args[1].equalsIgnoreCase("tp") || args[1].equalsIgnoreCase("banner")){
+                            return Countrydata.gettaglist();
                         }
                     }else if(args.length == 4){
                         if(args[1].equalsIgnoreCase("setpoint") || args[1].equalsIgnoreCase("addpoint")
                                 || args[1].equalsIgnoreCase("addmember") || args[1].equalsIgnoreCase("removemember")
-                                || args[1].equalsIgnoreCase("sethead")){
+                                || args[1].equalsIgnoreCase("sethead") || args[1].equalsIgnoreCase("setreligion")){
                             return Countrydata.gettaglist();
                         }
                     }
-                }else if(args[0].equalsIgnoreCase("word")){
-                    if(args.length == 2) {
-                        if("add".contains(args[1])) {
+                }else if(args[0].equalsIgnoreCase("word") || args[0].equalsIgnoreCase("keepinventory")) {
+                    if (args.length == 2) {
+                        if ("add".contains(args[1])) {
                             cmdlist.add("add");
-                        }if("remove".contains(args[1])) {
+                        }
+                        if ("remove".contains(args[1])) {
                             cmdlist.add("remove");
-                        }if("list".contains(args[1])) {
+                        }
+                        if ("list".contains(args[1])) {
                             cmdlist.add("list");
                         }
                         return cmdlist;
+                    }
+                }else if(args[0].equalsIgnoreCase("announce")){
+                    if (args.length == 2) {
+                        if ("add".contains(args[1])) {
+                            cmdlist.add("add");
+                        }
+                        if ("remove".contains(args[1])) {
+                            cmdlist.add("remove");
+                        }
+                        if ("list".contains(args[1])) {
+                            cmdlist.add("list");
+                        }if ("setjoinmessage".contains(args[1])) {
+                            cmdlist.add("setjoinmessage");
+                        }
+                        return cmdlist;
+                    }if(args.length == 3){
+                        if(args[1].equalsIgnoreCase("setjoinmessage")) {
+                            if ("clear".contains(args[2])) {
+                                cmdlist.add("clear");
+                            }
+                            return cmdlist;
+                        }
                     }
                 }
             }

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -297,22 +298,37 @@ public class Countrydata {
         }else{System.out.println("名前が違います。");}
     }
 
-    public static void setCountryTP(Location location , String TAG){
+    public static void setCountryTP(Location location , String TAG , Integer number){
 
         YamlConfiguration yml = loadCountry(TAG);
-        yml.set("TP.world",location.getWorld().getName());
-        yml.set("TP.X",location.getX());
-        yml.set("TP.Y",location.getY());
-        yml.set("TP.Z",location.getZ());
+        if(number == 0) {
+            yml.set("TP.world", location.getWorld().getName());
+            yml.set("TP.X", location.getX());
+            yml.set("TP.Y", location.getY());
+            yml.set("TP.Z", location.getZ());
+        }else{
+            yml.set("TP" + number + ".world", location.getWorld().getName());
+            yml.set("TP" + number + ".X", location.getX());
+            yml.set("TP" + number + ".Y", location.getY());
+            yml.set("TP" + number + ".Z", location.getZ());
+        }
         savecounty(TAG,yml);
     }
-    public static Location getCountryTP(String TAG){
+    public static Location getCountryTP(String TAG , Integer number){
         if(TAG.contains("null") == false) {
             YamlConfiguration yml = loadCountry(TAG);
-            if (yml.getKeys(true).contains("TP")) {
-                Location location = new Location(Bukkit.getWorld(yml.getString("TP.world")), yml.getDouble("TP.X")
-                        , yml.getDouble("TP.Y"), yml.getDouble("TP.Z"));
-                return location;
+            if(number == 0) {
+                if (yml.getKeys(true).contains("TP")) {
+                    Location location = new Location(Bukkit.getWorld(yml.getString("TP.world")), yml.getDouble("TP.X")
+                            , yml.getDouble("TP.Y"), yml.getDouble("TP.Z"));
+                    return location;
+                }
+            }else {
+                if (yml.getKeys(true).contains("TP" + number)) {
+                    Location location = new Location(Bukkit.getWorld(yml.getString("TP" + number + ".world")), yml.getDouble("TP" + number + ".X")
+                            , yml.getDouble("TP" + number + ".Y"), yml.getDouble("TP" + number + ".Z"));
+                    return location;
+                }
             }
         }
         return null;
@@ -339,9 +355,8 @@ public class Countrydata {
     }
 
     public static void setnickname(String TAG,String nickname){
-        if(nickname.length() >= 8){
-            nickname = nickname.substring(0,8);
-        }
+        Integer yeah = checkhan(nickname);
+        nickname = nickname.substring(0,yeah);
         YamlConfiguration yml = loadCountry(TAG);
         yml.set("nickname",nickname);
         savecounty(TAG,yml);
@@ -443,12 +458,69 @@ public class Countrydata {
                 list.add(name);
             }
         }
+        System.out.println(list);
         return list;
     }
 
     public static void removepoint(String tag ,Integer number){
         Integer now = getCountrypoint(tag);
         setCountrypoint(tag,now - number);
+    }
+
+
+    public static Integer checkhan(String s){
+        Integer yeah = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i] >= 0xff61 && chars[i] <= 0xff9f) {
+                yeah = yeah + 1;
+            } else {
+                yeah = yeah +2;
+            }
+            if(yeah >= 16){
+                return i + 1;
+            }
+        }
+        return s.length();
+    }
+
+    public static void setreligion(String tag , String religion){
+        YamlConfiguration yml = loadCountry(tag);
+        yml.set("religion",religion);
+        savecounty(tag,yml);
+    }
+
+    public static String getreligion(String tag){
+        YamlConfiguration yml = loadCountry(tag);
+        return yml.getString("religion");
+    }
+
+    public static void setBanner(String tag , ItemStack stack){
+        YamlConfiguration yml = loadCountry(tag);
+        yml.set("banner",stack);
+        savecounty(tag,yml);
+    }
+
+    public static ItemStack getBanner(String tag){
+        YamlConfiguration yml = loadCountry(tag);
+        if(yml.getKeys(true).contains("banner")){
+            return (ItemStack) yml.get("banner");
+        }
+        return null;
+    }
+
+    public static Integer getTPsize(String tag){
+        YamlConfiguration yml = loadCountry(tag);
+        if(yml.getKeys(true).contains("TPsize")){
+            return yml.getInt("TPsize");
+        }
+        return 0;
+    }
+
+    public static void setTPsize(String tag , Integer size){
+        YamlConfiguration yml = loadCountry(tag);
+        yml.set("TPsize",size);
+        savecounty(tag,yml);
     }
 
 

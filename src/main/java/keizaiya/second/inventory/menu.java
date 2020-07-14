@@ -221,15 +221,18 @@ public class menu {
                 }
             }if(name == "act1"){
                 Playerdata.chengcountry((Player) e.getWhoClicked(),1);
+                Playerdata.chengchatmode((Player) e.getWhoClicked(),0);
                 e.getWhoClicked().sendMessage("§8[§7System§8] §7アカウントを変更しました。 §8(§fNo.1§8)");
                 e.getWhoClicked().closeInventory();
             }if(name == "act2"){
                 Playerdata.chengcountry((Player) e.getWhoClicked(),2);
+                Playerdata.chengchatmode((Player) e.getWhoClicked(),0);
                 e.getWhoClicked().sendMessage("§8[§7System§8] §7アカウントを変更しました。 §8(§fNo.2§8)");
                 e.getWhoClicked().closeInventory();
             }if(name == "act3"){
                 Playerdata.chengcountry((Player) e.getWhoClicked(),3);
                 e.getWhoClicked().sendMessage("§8[§7System§8] §7アカウントを変更しました。 §8(§fNo.3§8)");
+                Playerdata.chengchatmode((Player) e.getWhoClicked(),0);
                 e.getWhoClicked().closeInventory();
             }if(name == "info"){
                 e.getWhoClicked().sendMessage(Countrydata.getCountryInfo(

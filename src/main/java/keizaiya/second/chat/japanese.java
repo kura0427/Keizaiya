@@ -123,43 +123,46 @@ public class japanese {
                         }
                     }
                 } else {
-                    if ( tmp.equals("-") ) {
+                    if (tmp.equals("-")) {
                         line.append(last + "ー");
                         last = "";
-                    } else if ( tmp.equals(".") ) {
+                    } else if (tmp.equals(".")) {
                         line.append(last + "。");
                         last = "";
-                    } else if ( tmp.equals(",") ) {
+                    } else if (tmp.equals(",")) {
                         line.append(last + "、");
                         last = "";
-                    } else if ( tmp.equals("?") ) {
+                    } else if (tmp.equals("?")) {
                         line.append(last + "？");
                         last = "";
-                    } else if ( tmp.equals("!") ) {
+                    } else if (tmp.equals("!")) {
                         line.append(last + "！");
                         last = "";
-                    } else if ( tmp.equals("[") ) {
+                    } else if (tmp.equals("[")) {
                         line.append(last + "「");
                         last = "";
-                    } else if ( tmp.equals("]") ) {
+                    } else if (tmp.equals("]")) {
                         line.append(last + "」");
                         last = "";
-                    } else if ( tmp.equals("<") ) {
+                    } else if (tmp.equals("<")) {
                         line.append(last + "＜");
                         last = "";
-                    } else if ( tmp.equals(">") ) {
+                    } else if (tmp.equals(">")) {
                         line.append(last + "＞");
                         last = "";
-                    } else if ( tmp.equals("&") ) {
+                    } else if (tmp.equals("&")) {
                         line.append(last + "&");
                         last = "";
-                    } else if ( tmp.equals("\"") ) {
+                    } else if (tmp.equals("\"")) {
                         line.append(last + "”");
                         last = "";
-                    } else if ( tmp.equals("(") || tmp.equals(")") ) {
-                        line.append(last);
+                    } else if (tmp.equals("(") ) {
+                        line.append(last + "(");
                         last = "";
-                    } else {
+                    } else if (tmp.equals(")")){
+                        line.append(last + ")");
+                        last = "";
+                    }else {
                         line.append(last + tmp);
                         last = "";
                     }

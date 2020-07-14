@@ -1,9 +1,23 @@
+#KeizaiyaPlugin Ver 1.0.3
+#
+
 Adimin: []
+#国家ポイントがたまるまでの総ポイント数
 pointparbreak: 350
+
+#体力が満タンだった時のテレポート時間
 TPtime: 200
+
+#招待コマンドのキャンセルまでのタイム(Tick)
 invitetime: 1200
+
+#離脱、追放コマンドのキャンセルまでのタイム(Tick)
 removetime: 1200
+
+#戦術カードのクールダウンタイム(Tick)
 cardtimer: 12000
+
+#国家ポイントの溜まるブロックのリスト
 breaklist:
   - "STONE"
   - "GRANITE"
@@ -18,6 +32,27 @@ breaklist:
   - "JUNGLE_LOG"
   - "ACACIA_LOG"
   - "DARK_OAK_LOG"
+  - "POTOZOL"
+  - "SAND"
+  - "RED_SAND"
+  - "GRAVEL"
+  - "GOLD_ORE"
+  - "IRON_ORE"
+  - "COAL_ORE"
+  - "LAPIS_ORE"
+  - "SANDSTONE"
+  - "OBSIDIAN"
+  - "DIAMOND_ORE"
+  - "REDSTNE_ORE"
+  - "PUMPKIN"
+  - "GLOWSTONE"
+  - "MELON"
+  - "END_STONE"
+  - "EMERALD_ORE"
+
+#Ideology
+#キーとイデオロギー名を設定すると簡単に追加できます
+
 ideology:
   Agr: "農業主義"
   Agr2: "農業主義Lv2"
@@ -83,18 +118,18 @@ ideology:
   peace2: "平和主義Lv2"
   peace3: "平和主義Lv3"
 
+#/Joinmessage
+#/%Player%　参加したプレイヤー名を表示させます
+#/リストに文字を入れるとランダムでお知らせします
+
 joinmessage:
   - "&e%Player%が参加しました"
   - "&e%Player%がやってきました"
   - "&e%Player%ががサーバーに滑り込みました"
   - "&e%Player%がただいま着陸いたしました"
-  - "&e%Player% 戦争ですか！?"
   - "&eやぁ %Player% 君。ビサ持ってきたよね？"
   - "&e%Player%さん、ようこそ"
-  - "&e%Player%が時間を炉にくべにきました"
   - "&eあ！ 野生の%Player%が飛び出してきた！"
   - "&eやったー、%Player%がキター"
-  - "&e%Player% ^^"
-  - "&e%Player% (´・ω・｀)"
-  - "&e%Player%をあがめよ"
-  - "&e%Player%さん、ポテトタイムはどうしたんですか"
+
+TPmax: 1

@@ -15,11 +15,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class armmy {
 
-    public static void used(PlayerInteractEvent e){
+    public static boolean used(PlayerInteractEvent e){
         Player player = e.getPlayer();
         if (e.getItem() != null) {
             String name = e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Potato.plugin,"armmy")
@@ -71,27 +72,42 @@ public class armmy {
                                     check.sendMessage("§8[§7System§8] §7聖戦を使用しました");
                                 }
                             } else if (name.contains("def")) {
-                                player.getInventory().getItemInMainHand().setAmount(
-                                        player.getInventory().getItemInMainHand().getAmount() - 1);
-                                for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
-                                    check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 2));
-                                    check.sendMessage("§8[§7System§8] §7守勢を使用しました");
+                                if(bouei.contains(Countrydata.getIdeology(Playerdata.getNowCountry(player)))){
+                                    player.getInventory().getItemInMainHand().setAmount(
+                                            player.getInventory().getItemInMainHand().getAmount() - 1);
+                                    for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
+                                        check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 2));
+                                        check.sendMessage("§8[§7System§8] §7守勢を使用しました");
+                                    }
+                                }else{
+                                    player.sendMessage("§8[§7System§8] §7平和,中立,非干渉主義でなければ使用できません");
+                                    return false;
                                 }
                             } else if (name.contains("PeaceofWar")) {
-                                player.getInventory().getItemInMainHand().setAmount(
-                                        player.getInventory().getItemInMainHand().getAmount() - 1);
-                                for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
-                                    check.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 12000, 2));
-                                    check.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 12000, 2));
-                                    check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 12000, 2));
-                                    check.sendMessage("§8[§7System§8] §7平和のための戦争を使用しました");
+                                if(peace.contains(Countrydata.getIdeology(Playerdata.getNowCountry(player)))) {
+                                    player.getInventory().getItemInMainHand().setAmount(
+                                            player.getInventory().getItemInMainHand().getAmount() - 1);
+                                    for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
+                                        check.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 12000, 2));
+                                        check.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 12000, 2));
+                                        check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 12000, 2));
+                                        check.sendMessage("§8[§7System§8] §7平和のための戦争を使用しました");
+                                    }
+                                }else{
+                                    player.sendMessage("§8[§7System§8] §7平和主義でなければ使用できません");
+                                    return false;
                                 }
                             } else if (name.contains("defense")) {
-                                player.getInventory().getItemInMainHand().setAmount(
-                                        player.getInventory().getItemInMainHand().getAmount() - 1);
-                                for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
-                                    check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 6000, 1));
-                                    check.sendMessage("§8[§7System§8] §7防御を使用しました");
+                                if(bouei.contains(Countrydata.getIdeology(Playerdata.getNowCountry(player)))) {
+                                    player.getInventory().getItemInMainHand().setAmount(
+                                            player.getInventory().getItemInMainHand().getAmount() - 1);
+                                    for (Player check : Countrydata.getOnlinemember(Playerdata.getNowCountry(player))) {
+                                        check.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 6000, 1));
+                                        check.sendMessage("§8[§7System§8] §7防御を使用しました");
+                                    }
+                                }else{
+                                    player.sendMessage("§8[§7System§8] §7平和,中立,非干渉主義でなければ使用できません");
+                                    return false;
                                 }
                             }
                             setCountry(player);
@@ -104,7 +120,9 @@ public class armmy {
                 }
 
             }
+
         }
+        return true;
     }
 
     public static ItemStack getarmmycard(String type){
@@ -187,4 +205,10 @@ public class armmy {
             }
         }.runTaskTimer(Potato.plugin,0,1);
     }
+
+    public static List<String> bouei = new ArrayList<>(Arrays.asList(
+            "Neul","Neul2","Neul3","Noin","Noin2","Noin3","peace","peace2","peace3"));
+
+    public static List<String> peace = new ArrayList<>(Arrays.asList(
+            "peace","peace2","peace3"));
 }

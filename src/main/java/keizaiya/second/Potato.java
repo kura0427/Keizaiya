@@ -5,9 +5,11 @@ import keizaiya.second.armmy.armmy;
 import keizaiya.second.author.*;
 import keizaiya.second.chat.chat;
 import keizaiya.second.chat.chatcommand;
+import keizaiya.second.chat.chatsiliarize;
 import keizaiya.second.chat.chengewoad;
 import keizaiya.second.file.Admin.Admin;
 import keizaiya.second.file.Admin.adminfile;
+import keizaiya.second.file.Admin.keepinventory;
 import keizaiya.second.file.Yamlfile;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.countrycommand;
@@ -15,12 +17,10 @@ import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.point;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
+import keizaiya.second.file.updatefiles;
 import keizaiya.second.inventory.menu;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -31,9 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -51,6 +49,7 @@ public final class Potato extends JavaPlugin implements Listener {
     public static FileConfiguration config;
     public static Class clname;
     public static Map<String,String> countrylist = new HashMap<>();
+    public static String joinmessages = "";
 
     @Override
     public void onEnable() {
@@ -91,6 +90,11 @@ public final class Potato extends JavaPlugin implements Listener {
         servermember.checkmember(event.getPlayer());
         event.setJoinMessage(joinmessage.joinmessage()
         .replace("&","§").replace("%Player%",event.getPlayer().getDisplayName()));
+        System.out.println(joinmessages.length());
+        if(joinmessages.length() > 1) {
+            String message = ("&8[&e&lお知らせ&8]&f" + joinmessages).replace("&", "§");
+            event.getPlayer().sendMessage(message);
+        }
     }
 
     @EventHandler
@@ -124,6 +128,11 @@ public final class Potato extends JavaPlugin implements Listener {
                 Countrydata.addEntity(Playerdata.getNowCountry(e.getEntity().getKiller()), e.getEntity().getKiller());
             }
         }
+    }
+
+    @EventHandler
+    public void Playerdeath(PlayerDeathEvent e){
+        keepinventory.deathPlayer(e);
     }
 
     @EventHandler

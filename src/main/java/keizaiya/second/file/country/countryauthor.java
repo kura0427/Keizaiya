@@ -1,10 +1,10 @@
 package keizaiya.second.file.country;
 
 import keizaiya.second.Potato;
+import keizaiya.second.chat.chatsiliarize;
 import keizaiya.second.file.player.Playerdata;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
 public class countryauthor {
     public static List<Player> inviteok = new ArrayList<>();
     public static List<Player> invitelist = new ArrayList<>();
+    public static List<Player> invitecl = new ArrayList<>();
     public static void InvitePlayer(Player sender,Player player , String Countrytag){
         if(Countrydata.checkpermission(sender,"invite")) {
             if (invitelist.contains(player) == false) {
@@ -30,6 +31,7 @@ public class countryauthor {
                             player2.sendMessage("§8[§7System§8] §7" + Countrydata.getCountryName(Country) + "から招待が届きました。");
                             player2.sendMessage("§8[§7System§8] §7参加する場合は以下のコマンドを実行してください。");
                             player2.sendMessage("§8[§7System§8] §7/Country INconsent");
+                            chatsiliarize.sendinvite(player2);
                             sender2.sendMessage("§8[§7System§8] §7" + player2.getDisplayName() + "に招待を送りました。");
                         }
                         now++;
@@ -56,6 +58,12 @@ public class countryauthor {
 
                             }
                         }
+                        if(invitecl.contains(player2)){
+                            removeinvitecl(player2);
+                            sender2.sendMessage("§8[§7System§8] §7" + player2.getDisplayName() + "の招待がキャンセルされました。");
+                            player2.sendMessage("§8[§7System§8] §7" + Countrydata.getCountryName(Country) + "への招待がキャンセルされました。");
+                            this.cancel();
+                        }
                     }
                 }.runTaskTimer(Potato.plugin, 0, 1);
             }else{
@@ -70,6 +78,15 @@ public class countryauthor {
         if(invitelist.contains(player)){
             invitelist.remove(player);
             inviteok.add(player);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean invitecansell(Player player){
+        if(invitelist.contains(player)){
+            invitelist.remove(player);
+            invitecl.add(player);
             return true;
         }
         return false;
@@ -92,8 +109,15 @@ public class countryauthor {
         }
     }
 
+    public static void removeinvitecl(Player player){
+        if(invitecl.contains(player)){
+            invitecl.remove(player);
+        }
+    }
+
     private static List<Player> removelist = new ArrayList<>();
     private static List<Player> removeok = new ArrayList<>();
+    private static List<Player> removecl = new ArrayList<>();
 
     public static void removecountry(Player sender,Player player , String Countrytag){
         if(sender == player || Countrydata.checkpermission(sender,"remove")){
@@ -115,6 +139,7 @@ public class countryauthor {
                                     sender2.sendMessage("§8[§7System§8] §7" + player2.getDisplayName() + "を" + Countrydata.getCountryName(Country) + "から離脱させますか。");
                                     sender2.sendMessage("§8[§7System§8] §7離脱させるには以下のコマンドを実行してください");
                                     sender2.sendMessage("§8[§7System§8] §7/Country REconsent <Player>");
+                                    chatsiliarize.sendremove(sender2 , player2);
                                 }
                                 now++;
                                 if (now >= endtime) {
@@ -133,6 +158,11 @@ public class countryauthor {
                                     }else{
                                         player.sendMessage("エラー^^");
                                     }
+                                }
+                                if(removecl.contains(player2)){
+                                    removeremovecl(player2);
+                                    sender2.sendMessage("§8[§7System§8] §7" + player2.getDisplayName() + "の離脱をキャンセルしました。");
+                                    this.cancel();
                                 }
 
                             }
@@ -159,14 +189,27 @@ public class countryauthor {
 
     public static void removeremoveok(Player player){
         if(removeok.contains(player)){
-            removeok.contains(player);
+            removeok.remove(player);
         }
-
     }
+
+    public static void removeremovecl(Player player){
+        if(removecl.contains(player)){
+            removecl.remove(player);
+        }
+    }
+
     public static void removechengeoklist(Player player){
         if(removelist.contains(player)){
             removelist.remove(player);
             removeok.add(player);
+        }
+    }
+
+    public static void removechengeokcl(Player player){
+        if(removelist.contains(player)){
+            removelist.remove(player);
+            removecl.add(player);
         }
     }
 

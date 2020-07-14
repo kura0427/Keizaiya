@@ -2,12 +2,15 @@ package keizaiya.second.file.Admin;
 
 import keizaiya.second.Potato;
 import keizaiya.second.armmy.armmy;
+import keizaiya.second.chat.chat;
 import keizaiya.second.chat.chengewoad;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.item;
 import keizaiya.second.file.player.Playerdata;
+import keizaiya.second.file.servermember;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -260,6 +263,70 @@ public class Admin {
                                 if(args.length == 3){
                                     player.getInventory().addItem(armmy.getarmmycard(args[2]));
                                 }
+                            }if(args[1].equalsIgnoreCase("setreligion")){
+                                if(args.length == 4){
+                                    if(Potato.countrylist.containsKey(args[3])) {
+                                        Countrydata.setreligion(args[3], args[2]);
+                                        player.sendMessage("§8[§7System§8] §7設定しました");
+                                    }else{
+                                        player.sendMessage("§8[§7System§8] §7指定した国はありません");
+                                    }
+                                }
+                            }if(args[1].equalsIgnoreCase("getreligioncard")){
+                                player.getInventory().addItem(item.getreligion());
+                            }if(args[1].equalsIgnoreCase("tp")){
+                                if(args.length == 4){
+                                    if(Potato.countrylist.containsKey(args[2])){
+                                        Integer i = null;
+                                        try{
+                                            i = Integer.valueOf(args[3]);
+                                        }catch (Exception es){
+                                            player.sendMessage("数字をいれてください");
+                                            return;
+                                        }
+                                        Location location = Countrydata.getCountryTP(args[2],i);
+                                        if(location != null){
+                                            player.teleport(location);
+                                        }else {
+                                            player.sendMessage("設定されてません");
+                                        }
+                                    }else {
+                                        player.sendMessage("指定した国はありません");
+                                    }
+                                }
+                            }if(args[1].equalsIgnoreCase("banner")){
+                                if(args.length == 3){
+                                    if(Potato.countrylist.containsKey(args[2])){
+                                        ItemStack stack = Countrydata.getBanner(args[2]);
+                                        if(stack != null){
+                                            stack.setAmount(1);
+                                            player.getInventory().addItem(stack);
+                                            player.sendMessage(Countrydata.getCountryName(args[2]) + " §7の旗を追加しました");
+                                        }else{
+                                            player.sendMessage("設定されてません");
+                                        }
+                                    }else {
+                                        player.sendMessage("指定した国はありません");
+                                    }
+                                }
+                            }if(args[1].equalsIgnoreCase("settpmax")){
+                                if(args.length == 4){
+                                    if(Potato.countrylist.containsKey(args[2])){
+                                        Integer i = null;
+                                        try{
+                                            i = Integer.valueOf(args[3]);
+                                        }catch (Exception es){
+                                            player.sendMessage("数字をいれてください");
+                                            return;
+                                        }
+                                        if(Potato.config.getInt("TPmax",1) >= i){
+                                            Countrydata.setTPsize(args[2],i);
+                                            player.sendMessage("設定しました");
+                                        }
+                                    }else {
+                                        player.sendMessage("指定された国家がありません");
+                                    }
+                                }
                             }
                         }if(args.length == 1){
                             player.sendMessage("/Admin Country info <Countrytag>...指定された国のInfoを開きます\n" +
@@ -270,7 +337,11 @@ public class Admin {
                                     "/Admin Country getPoint <Countrytag>...国の国家ポイントを表示します\n" +
                                     "/Admin Country addmember <Player> <Countrytag>...国家にプレイヤーを追加します\n" +
                                     "/Admin Country removemember <Player> <Countrytag>...国家のプレイヤーを離脱させます\n" +
-                                    "/Admin Country sethead <Player> <Countrytag>...プレイヤーを指定した国家の国家元首に設定します");
+                                    "/Admin Country sethead <Player> <Countrytag>...プレイヤーを指定した国家の国家元首に設定します\n" +
+                                    "/Admin Country setreligion <religionname> <Countrytag> ...指定した国の宗教を設定します\n" +
+                                    "/Admin Country getreligioncard ...宗教変更カードをだします\n" +
+                                    "/Admin Country tp <Countrytag> ... 指定した国のTPpointにTP\n" +
+                                    "/Admin country banner <Countrytag> ...指定した国の旗を入手");
                         }
                     }if(args[0].equalsIgnoreCase("item")) {
                         if(args.length >= 2){
@@ -330,6 +401,92 @@ public class Admin {
                             }else{
                                 player.sendMessage("そのプレイヤー名のプレイヤーはいません");
                             }
+                        }
+                    }if(args[0].equalsIgnoreCase("keepinventory")) {
+                        if(args.length >= 2) {
+                            if (args[1].equalsIgnoreCase("list")) {
+                                String name = keepinventory.listPlayer();
+                                player.sendMessage("KeepInventory有効者\n" + name);
+                            }
+                            if(args.length == 3){
+                                Player P = Bukkit.getPlayer(args[2]);
+                                if(P != null) {
+                                    if (args[1].equalsIgnoreCase("add")) {
+                                        keepinventory.addPlayer(P);
+                                        player.sendMessage("設定しました");
+                                        P.sendMessage("Keepinventoryが有効になりました");
+                                    } else if (args[1].equalsIgnoreCase("remove")) {
+                                        keepinventory.removePlayer(P);
+                                        player.sendMessage("設定しました");
+                                        P.sendMessage("Keepinventoryが無効になりました");
+                                    }
+                                }else {
+                                    player.sendMessage("指定されたプレイヤーはいません");
+                                }
+                            }
+                        }
+                    }if(args[0].equalsIgnoreCase("tp")) {
+                        player.teleport(adminfile.getMainTP());
+                    }if(args[0].equalsIgnoreCase("announce")) {
+                        if(args.length >= 2) {
+                            if (args[1].equalsIgnoreCase("add")) {
+                                if (args.length >= 4) {
+                                    Integer time = 600;
+                                    try {
+                                        time = Integer.valueOf(args[2]);
+                                    } catch (Exception er) {
+                                        System.out.println(er);
+                                        player.sendMessage("数字を入れてください");
+                                        return;
+                                    }
+                                    String message = "";
+                                    for (int i = 3; i < args.length; i++) {
+                                        message = message + args[i] + " ";
+                                    }
+                                    chat.announcement(message, time);
+                                    player.sendMessage("設定しました");
+                                }
+                            } else if (args[1].equalsIgnoreCase("list")) {
+                                if (args.length == 2) {
+                                    player.sendMessage(chat.getlist());
+                                }
+                            } else if (args[1].equalsIgnoreCase("remove")) {
+                                if (args.length == 3) {
+                                    Integer nomber = null;
+                                    try {
+                                        nomber = Integer.valueOf(args[2]);
+                                    } catch (Exception er) {
+                                        System.out.println(er);
+                                        player.sendMessage("数字を入れてください");
+                                        return;
+                                    }
+                                    if (nomber != null) {
+                                        if (chat.task.containsKey(nomber)) {
+                                            chat.task.put(nomber, true);
+                                            player.sendMessage("消去しました");
+                                        } else {
+                                            player.sendMessage("ありません");
+                                        }
+                                    }
+                                }
+                            }else if (args[1].equalsIgnoreCase("setjoinmessage")) {
+                                String message = "";
+                                if(args.length >= 3) {
+                                    if (args[2].equalsIgnoreCase("clear")){
+                                        Potato.joinmessages = "";
+                                    }else {
+                                        for (int i = 2; i < args.length; i++) {
+                                            message = message + args[i] + " ";
+                                        }
+                                        Potato.joinmessages = message;
+                                    }
+                                }
+                            }
+                        }if(args.length == 1){
+                            player.sendMessage("/admin announce add <time(s)> <message1> <message2>... アナウンスを設定します\n" +
+                                    "/admin announce list ... 現在稼働しているアナウンスの管理番号を表示させます\n" +
+                                    "/admin announce remove <nomber> ... 指定したアナウンスを消去します\n" +
+                                    "/admin announce setjoinmessage <message1> <message2> ...プレイヤー参加時のお知らせを設定します");
                         }
                     }
                 }
