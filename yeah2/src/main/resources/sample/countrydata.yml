@@ -1,0 +1,16 @@
+country: ""
+head: ""
+ideology: "initial"
+religion: ""
+member: []
+point: 0
+nowbreak: 0
+permission:
+  invite: []
+  chat: []
+  permission: []
+  item: []
+  tp: []
+  remove: []
+Banner: null
+TPsize: 0
