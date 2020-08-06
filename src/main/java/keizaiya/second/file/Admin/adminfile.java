@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,9 +44,13 @@ public class adminfile {
     }
     public static Location getMainTP(){
         YamlConfiguration yml = loadfile();
-        Location location = new Location(Bukkit.getWorld(yml.getString("TP.world")),yml.getDouble("TP.X")
-                ,yml.getDouble("TP.Y"),yml.getDouble("TP.Z"));
-        return location;
+        if(yml.getKeys(true).contains("TP.world")) {
+            Location location = new Location(Bukkit.getWorld(yml.getString("TP.world")), yml.getDouble("TP.X")
+                    , yml.getDouble("TP.Y"), yml.getDouble("TP.Z"));
+            return location;
+        }else{
+            return null;
+        }
     }
 
     public static void setTPname(String name){
@@ -54,7 +60,11 @@ public class adminfile {
     }
     public static String getTPname(){
         YamlConfiguration yml = loadfile();
-        return yml.getString("Name");
+        if(yml.getKeys(true).contains("Name")) {
+            return yml.getString("Name");
+        }else{
+            return "null";
+        }
     }
 
     private static YamlConfiguration loadfile(){
@@ -120,4 +130,5 @@ public class adminfile {
         }
         return false;
     }
+
 }

@@ -1,13 +1,16 @@
 package keizaiya.second;
 
-import keizaiya.second.author.admincommandtab;
-import keizaiya.second.author.authorclick;
-import keizaiya.second.author.authorcommand;
-import keizaiya.second.author.commandtab;
-import keizaiya.second.chat.chat;
-import keizaiya.second.chat.chatcommand;
+import keizaiya.second.armmy.armmer;
+import keizaiya.second.armmy.armmy;
+import keizaiya.second.author.*;
+import keizaiya.second.chat.*;
+import keizaiya.second.chat.channel.channel;
+import keizaiya.second.chat.channel.channelcom;
+import keizaiya.second.chat.channel.channelmenu;
+import keizaiya.second.connection.tuusin;
 import keizaiya.second.file.Admin.Admin;
 import keizaiya.second.file.Admin.adminfile;
+import keizaiya.second.file.Admin.keepinventory;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.countrycommand;
 import keizaiya.second.file.country.ideology;
@@ -15,18 +18,19 @@ import keizaiya.second.file.country.point;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
 import keizaiya.second.inventory.menu;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -34,10 +38,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.net.ServerSocket;
+import java.util.*;
 
 public final class Potato extends JavaPlugin implements Listener {
 
@@ -45,6 +50,8 @@ public final class Potato extends JavaPlugin implements Listener {
     public static FileConfiguration config;
     public static Class clname;
     public static Map<String,String> countrylist = new HashMap<>();
+    public static String joinmessages = "";
+    public static Thread tuusins = null;
 
     @Override
     public void onEnable() {
@@ -62,10 +69,23 @@ public final class Potato extends JavaPlugin implements Listener {
 
         getCommand("country").setTabCompleter(new commandtab());
         getCommand("admin").setTabCompleter(new admincommandtab());
+        getCommand("channel").setTabCompleter(new channelcomtab());
 
         point.updatelist();
         adminfile.checkAdmindata();
+        channel.CheckFile();
+        chengewoad.checkfile();
+        channel.updatechannel();
 
+        try {
+            ServerSocket socket = new ServerSocket(36846);
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        tuusins = tuusin.startcom();
+        tuusins.start();
 
         getServer().getPluginManager().registerEvents(this,this);
 
@@ -74,6 +94,16 @@ public final class Potato extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        tuusin.stop = true;
+        tuusins.stop();
+        if(tuusin.socket != null){
+            try {
+                tuusin.socket.close();
+                System.out.println("closed sucsess");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @EventHandler
@@ -82,12 +112,19 @@ public final class Potato extends JavaPlugin implements Listener {
             Playerdata.CreatePlayerdata(event.getPlayer());
         }
         servermember.checkmember(event.getPlayer());
-        event.setJoinMessage(event.getPlayer().getDisplayName() + "が参加しました。");
+        event.setJoinMessage(joinmessage.joinmessage()
+        .replace("&","§").replace("%Player%",event.getPlayer().getDisplayName()));
+        System.out.println(joinmessages.length());
+        if(joinmessages.length() > 1) {
+            String message = ("&8[&e&lお知らせ&8]&f" + joinmessages).replace("&", "§");
+            event.getPlayer().sendMessage(message);
+        }
     }
 
     @EventHandler
     public void onPlayerClickInventory(InventoryClickEvent e){
         if(e.getView().getTitle() == "Menu"){ menu.clickmenu(e); }
+        if(e.getView().getTitle() == "Channel"){ channelmenu.clickmenu(e); }
     }
 
     @EventHandler
@@ -100,11 +137,14 @@ public final class Potato extends JavaPlugin implements Listener {
         if(point.checkBlock(event.getBlock().getType())){
             Countrydata.addBreakblock(Playerdata.getNowCountry(event.getPlayer()),event.getPlayer());
         }
+        superpixcel.breakblocktoSP(event);
     }
     @EventHandler
     public void click(PlayerInteractEvent e){
         ideology.clickideologycard(e);
         authorclick.authorclick(e);
+        armmy.used(e);
+        armmer.click(e);
     }
 
     @EventHandler
@@ -114,6 +154,16 @@ public final class Potato extends JavaPlugin implements Listener {
                 Countrydata.addEntity(Playerdata.getNowCountry(e.getEntity().getKiller()), e.getEntity().getKiller());
             }
         }
+    }
+
+    @EventHandler
+    public void Playerdeath(PlayerDeathEvent e){
+        keepinventory.deathPlayer(e);
+    }
+
+    @EventHandler
+    public void damegeEvent(EntityDamageByEntityEvent e){
+        armmer.damege(e);
     }
 
     @EventHandler
@@ -132,6 +182,7 @@ public final class Potato extends JavaPlugin implements Listener {
         Admin.onAdmincommnand(sender,cmd,commandLabel,args);
         authorcommand.onauthorcommnand(sender,cmd,commandLabel,args);
         chatcommand.onauthorcommnand(sender,cmd,commandLabel,args);
+        channelcom.onchannelcommnand(sender,cmd,commandLabel,args);
         if(sender instanceof Player){
             Player p = (Player) sender;
             if(cmd.getName().equalsIgnoreCase("menu")) {
@@ -139,7 +190,18 @@ public final class Potato extends JavaPlugin implements Listener {
                     menu.opengui(p);
                 }
             }if(cmd.getName().equalsIgnoreCase("test")){
-
+                p.getInventory().addItem(superpixcel.getitem());
+                InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
+                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                YamlConfiguration yml = new YamlConfiguration();
+                try {
+                    yml.load(br);
+                    music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InvalidConfigurationException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return true;

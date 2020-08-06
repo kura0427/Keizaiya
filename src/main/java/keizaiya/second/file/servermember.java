@@ -1,9 +1,13 @@
 package keizaiya.second.file;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.File;
+import java.util.UUID;
 
 public class servermember {
     public static void checkmember(Player player){
@@ -20,5 +24,18 @@ public class servermember {
             }
         }
         Yamlfile.Saveyaml(file,yml);
+    }
+
+    public static void getplayer(String playername){
+        UUID uuid = Bukkit.getPlayerUniqueId(playername);
+        OfflinePlayer player1 = Bukkit.getServer().getOfflinePlayer(uuid);
+        System.out.println(uuid);
+        System.out.println(player1);
+        Player player = player1.getPlayer();
+        if(player != null){
+            System.out.println(player);
+            System.out.println(player.getDisplayName());
+        }
+
     }
 }

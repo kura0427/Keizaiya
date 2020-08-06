@@ -18,9 +18,12 @@ public class playertelepoat {
         if(tpnumber == 0){
             tppoint2 = adminfile.getMainTP();
             name = adminfile.getTPname();
-        }else if(tpnumber == 1){
+            if(tppoint2 == null){
+                player.sendMessage("§8[§7System§8] §7テレポートポイントが設定されていません。");
+                return false;}
+        }else if(tpnumber >= 1){
             if(Playerdata.getNowCountry(player).contains("null") == false) {
-                tppoint2 = Countrydata.getCountryTP(Playerdata.getNowCountry(player));
+                tppoint2 = Countrydata.getCountryTP(Playerdata.getNowCountry(player) , tpnumber - 1);
                 name = Countrydata.getCountryName(Playerdata.getNowCountry(player));
             }else{
                 tppoint2 = null;

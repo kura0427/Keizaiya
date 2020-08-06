@@ -18,24 +18,41 @@ commands:
     usage: /<command>
     permission: inferno.admin
     permission-message: "これは管理者が使うコマンドです。よく見つけたね^^"
-  chat:
-    description: "チャット関連の設定です"
-    usage: /<command>
   Print:
     description: "通貨コマンド"
     usage: /<command>
   ToolColor:
-    description: "メニューを開くコマンドです"
+    description: "カラー変えるコマンド"
     usage: /<command>
   playerinfo:
-    description: "メニューを開くコマンドです"
+    description: "プレイヤーの情報をみれます"
     usage: /<command>
   selfkick:
-    description: "メニューを開くコマンドです"
+    description: "自分をキックします"
+    usage: /<command>
+  w:
+    description: "個人チャット用コマンドです"
+    usage: /<command>
+  dm:
+    description: "個人チャット用コマンドです"
+    usage: /<command>
+  r:
+    description: "個人チャット用コマンドです"
+    usage: /<command>
+  notice:
+    description: "通知関連コマンド"
+    usage: /<command>
+  keizaiya:
+    description: "通知関連コマンド"
+    usage: /<command>
+  channel:
+    description: "通知関連コマンド"
     usage: /<command>
   test:
     description: "テストコマンド(プラグイン開発用)"
     usage: /<command>
+    permission: inferno.admin
+    permission-message: "これは管理者が使うコマンドです。よく見つけたね^^"
 
 
 permissions:

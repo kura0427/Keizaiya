@@ -30,6 +30,7 @@ public class ideology {
                 ideologylist.add(Key.replace("ideology.",""));
             }
         }
+        ideologylist.add("initial");
         return ideologylist;
     }
 
