@@ -3,23 +3,22 @@ package keizaiya.second;
 import keizaiya.second.armmy.armmer;
 import keizaiya.second.armmy.armmy;
 import keizaiya.second.author.*;
-import keizaiya.second.chat.chat;
-import keizaiya.second.chat.chatcommand;
-import keizaiya.second.chat.chatsiliarize;
-import keizaiya.second.chat.chengewoad;
+import keizaiya.second.chat.*;
+import keizaiya.second.chat.channel.channel;
+import keizaiya.second.chat.channel.channelcom;
+import keizaiya.second.chat.channel.channelmenu;
+import keizaiya.second.connection.tuusin;
 import keizaiya.second.file.Admin.Admin;
 import keizaiya.second.file.Admin.adminfile;
 import keizaiya.second.file.Admin.keepinventory;
-import keizaiya.second.file.Yamlfile;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.countrycommand;
 import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.point;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
-import keizaiya.second.file.updatefiles;
 import keizaiya.second.inventory.menu;
-import net.md_5.bungee.api.chat.HoverEvent;
+import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,8 +38,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.util.*;
 
 public final class Potato extends JavaPlugin implements Listener {
@@ -50,6 +51,7 @@ public final class Potato extends JavaPlugin implements Listener {
     public static Class clname;
     public static Map<String,String> countrylist = new HashMap<>();
     public static String joinmessages = "";
+    public static Thread tuusins = null;
 
     @Override
     public void onEnable() {
@@ -67,11 +69,23 @@ public final class Potato extends JavaPlugin implements Listener {
 
         getCommand("country").setTabCompleter(new commandtab());
         getCommand("admin").setTabCompleter(new admincommandtab());
+        getCommand("channel").setTabCompleter(new channelcomtab());
 
         point.updatelist();
         adminfile.checkAdmindata();
+        channel.CheckFile();
         chengewoad.checkfile();
+        channel.updatechannel();
 
+        try {
+            ServerSocket socket = new ServerSocket(36846);
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        tuusins = tuusin.startcom();
+        tuusins.start();
 
         getServer().getPluginManager().registerEvents(this,this);
 
@@ -80,6 +94,16 @@ public final class Potato extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        tuusin.stop = true;
+        tuusins.stop();
+        if(tuusin.socket != null){
+            try {
+                tuusin.socket.close();
+                System.out.println("closed sucsess");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @EventHandler
@@ -100,6 +124,7 @@ public final class Potato extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerClickInventory(InventoryClickEvent e){
         if(e.getView().getTitle() == "Menu"){ menu.clickmenu(e); }
+        if(e.getView().getTitle() == "Channel"){ channelmenu.clickmenu(e); }
     }
 
     @EventHandler
@@ -112,6 +137,7 @@ public final class Potato extends JavaPlugin implements Listener {
         if(point.checkBlock(event.getBlock().getType())){
             Countrydata.addBreakblock(Playerdata.getNowCountry(event.getPlayer()),event.getPlayer());
         }
+        superpixcel.breakblocktoSP(event);
     }
     @EventHandler
     public void click(PlayerInteractEvent e){
@@ -156,6 +182,7 @@ public final class Potato extends JavaPlugin implements Listener {
         Admin.onAdmincommnand(sender,cmd,commandLabel,args);
         authorcommand.onauthorcommnand(sender,cmd,commandLabel,args);
         chatcommand.onauthorcommnand(sender,cmd,commandLabel,args);
+        channelcom.onchannelcommnand(sender,cmd,commandLabel,args);
         if(sender instanceof Player){
             Player p = (Player) sender;
             if(cmd.getName().equalsIgnoreCase("menu")) {
@@ -163,6 +190,7 @@ public final class Potato extends JavaPlugin implements Listener {
                     menu.opengui(p);
                 }
             }if(cmd.getName().equalsIgnoreCase("test")){
+                p.getInventory().addItem(superpixcel.getitem());
                 InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
                 BufferedReader br = new BufferedReader(new InputStreamReader(stream));
                 YamlConfiguration yml = new YamlConfiguration();

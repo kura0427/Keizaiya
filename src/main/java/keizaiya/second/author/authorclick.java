@@ -21,6 +21,7 @@ public class authorclick {
                         Location location = e.getClickedBlock().getLocation();
                         location.setY(location.getY() + 1);
                         e.getPlayer().getWorld().spawnEntity(location, EntityType.VILLAGER);
+                        e.getItem().setAmount(e.getItem().getAmount() - 1);
                     }
                 }
             }

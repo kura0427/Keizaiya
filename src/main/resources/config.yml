@@ -132,4 +132,5 @@ joinmessage:
   - "&eあ！ 野生の%Player%が飛び出してきた！"
   - "&eやったー、%Player%がキター"
 
+#サーバー側のTP上限です。
 TPmax: 1

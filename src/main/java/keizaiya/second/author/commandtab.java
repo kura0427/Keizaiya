@@ -1,5 +1,6 @@
 package keizaiya.second.author;
 
+import keizaiya.second.Potato;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.player.Playerdata;
 import org.bukkit.Bukkit;
@@ -7,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,8 @@ public class commandtab implements TabCompleter {
                     cmdlist.add("religion");
                 }if("promote".contains(args[0])) {
                     cmdlist.add("promote");
+                }if("repuest".contains(args[0])) {
+                    cmdlist.add("repuest");
                 }
                 return cmdlist;
             }else if(args.length == 2){
@@ -104,6 +108,13 @@ public class commandtab implements TabCompleter {
                         }
                     }
                     return cmdlist;
+                }else if(args[0].equalsIgnoreCase("repuest")){
+                    Countrydata.updateCountrylist();
+                    cmdlist = new ArrayList<>();
+                    for(String key : Potato.countrylist.keySet()){
+                        cmdlist.add(Potato.countrylist.get(key));
+                    }
+                    return cmdlist;
                 }
             }else if(args.length == 3){
                 if(args[0].equalsIgnoreCase("item")){
@@ -114,6 +125,10 @@ public class commandtab implements TabCompleter {
                             cmdlist.add("get");
                         }
                         return cmdlist;
+                    }
+                }if(args[0].equalsIgnoreCase("tp")){
+                    if(Playerdata.getNowCountry(player).contains("null") == false){
+                        return Countrydata.getTPsizelist(Playerdata.getNowCountry(player));
                     }
                 }
             }

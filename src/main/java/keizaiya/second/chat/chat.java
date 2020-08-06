@@ -1,12 +1,15 @@
 package keizaiya.second.chat;
 
 import keizaiya.second.Potato;
+import keizaiya.second.chat.channel.channel;
+import keizaiya.second.chat.channel.channeldata;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.player.Playerdata;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,23 +22,53 @@ public class chat {
         String messagemot = e.getMessage();
         Boolean noneIME = true;
         Player sender = e.getPlayer();
-        if (e.getMessage().substring(0).contains("!")) {
+        if (e.getMessage().startsWith("!")) {
             chatmode = 0;
             messagemot = messagemot.substring(1, messagemot.length());
         }
-        if (messagemot.substring(0).contains("#")) {
+        if (messagemot.startsWith("#")) {
             noneIME = false;
             messagemot = messagemot.substring(1, messagemot.length());
-            if (messagemot.substring(0).contains("!")) {
+            if (messagemot.startsWith("!")) {
                 chatmode = 0;
                 messagemot = messagemot.substring(1, messagemot.length());
             }
         }
         String messagemot2 = chengewoad.chengeword(messagemot);
-        String result = googleIME.convByGoogleIME(japanese.conv(messagemot2));
+        String result = "";
+        Integer iti = 0;
+        Integer iti2 = 0;
+        String data = messagemot2;
+        if(noneIME) {
+            for (int i = 0; i <= messagemot2.length(); i++) {
+                if (data.contains("&")) {
+                    iti = data.indexOf("&");
+                    if(iti != 0){
+                        result = result + googleIME.convByGoogleIME(japanese.conv(data.substring(0,iti)));
+                    }
+                    if (data.length() >= iti + 2) {
+                        if (data.substring(iti + 2, data.length()).contains("&")) {
+                            iti2 = data.substring(iti + 2).indexOf("&");
+                            result = result + data.substring(iti, iti + 2) + googleIME.convByGoogleIME(japanese.conv(data.substring(iti + 2, iti2 + 2)));
+                            data = data.substring(iti2 + 2, data.length());
+                        } else {
+                            result = result + data.substring(iti, iti + 2) + googleIME.convByGoogleIME(japanese.conv(data.substring(iti + 2, data.length())));
+                            break;
+                        }
+                    } else {
+                        result = result + googleIME.convByGoogleIME(japanese.conv(data));
+                        break;
+                    }
+                } else {
+                    result = result + googleIME.convByGoogleIME(japanese.conv(data));
+                    break;
+                }
+            }
+        }
+        System.out.println(result);
         String Countryname = "";
         String tag = null;
-        if (chatmode != 100 && chatmode != 0) {
+        if (chatmode != 100 && chatmode != 0 && chatmode < 1000) {
             if (Playerdata.getCountrytag(e.getPlayer(), chatmode).contains("null")) {
                 Playerdata.chengchatmode(e.getPlayer(),0);
                 chatmode = Playerdata.chatmode(e.getPlayer());
@@ -74,7 +107,7 @@ public class chat {
         if(nihongoin){ message2 = messagemot2;}
         if(noneIME) {
             if (nihongoin == false) {
-                message2 = result + " §8(" + messagemot + ")";
+                message2 = result + " §8(" + messagemot + "§8)";
             }
         }else{ message2 = messagemot; }
 
@@ -98,7 +131,7 @@ public class chat {
 
             Log( "[" + "Admin" + "][" + e.getPlayer().getDisplayName() + "] " + message2);
 
-        } else if(chatmode > 0){
+        }else if(chatmode > 0 && chatmode < 1000){
             String role = Countrydata.getrole(sender,tag);
             for(Player player : Countrydata.getOnlinemember(tag)){
                 Integer Coutrynamber = Playerdata.getNumber(player,tag);
@@ -113,6 +146,24 @@ public class chat {
             }
 
             Log( "[" + "Country" + "][" + Countryname + "§8][§f" + e.getPlayer().getDisplayName() + "] " + message2);
+        }else if(chatmode >= 1000){
+            for(String key : channel.list.keySet()){
+                channeldata datas = channel.list.get(key);
+                if(datas.getModenum().equals(chatmode)){
+                    List<Player> list = channel.getOnlinePlayer(key);
+                    String message = "§8[§eCh§8][§7" + datas.getname() + "§8]§f" + sender.getDisplayName() + "§b: §f" + message2;
+                    if(list != null){
+                        for(Player player : list){
+                            player.sendMessage(message.replace("&","§"));
+                        }
+                    }
+                    Log( "[" + "Channel" + "][" + e.getPlayer().getDisplayName() + "] " + message2);
+                    break;
+                }
+            }
+        }else{
+            e.getPlayer().sendMessage("§cチャットモードが不正な値になっています。");
+            System.out.println(chatmode);
         }
         e.setCancelled(true);
     }

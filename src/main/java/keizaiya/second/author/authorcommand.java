@@ -3,6 +3,7 @@ package keizaiya.second.author;
 import keizaiya.second.chat.chat;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.player.Playerdata;
+import keizaiya.second.inventory.help;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -33,10 +34,12 @@ public class authorcommand {
                     }
                 }
             }if(cmd.getName().equalsIgnoreCase("toolcolor")){
-                if(player.getInventory().getItemInMainHand().getType() != null){
+                if(player.getInventory().getItemInMainHand().getType() != Material.AIR){
                     ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
-                    meta.setDisplayName(meta.getDisplayName().replace("&","§"));
-                    player.getInventory().getItemInMainHand().setItemMeta(meta);
+                    if(meta != null) {
+                        meta.setDisplayName(meta.getDisplayName().replace("&", "§"));
+                        player.getInventory().getItemInMainHand().setItemMeta(meta);
+                    }
                 }
             }if(cmd.getName().equalsIgnoreCase("playerinfo")){
                 if(args.length == 1){
@@ -76,6 +79,7 @@ public class authorcommand {
                         player1.sendMessage("§8[§6DM§8][§7By: " + player.getDisplayName() + "§8]§f"+ message);
                         player.sendMessage("§8[§6DM§8][§7To: " + player1.getDisplayName() + "§8]§f"+ message);
                         chat.dm.put(player,player1);
+                        chat.dm.put(player1,player);
                         chat.Log(player.getDisplayName() +" To " + player1.getDisplayName() + message);
                     }else{
                         player.sendMessage("指定したプレイヤーはいません");
@@ -117,7 +121,7 @@ public class authorcommand {
                                     ",{\"text\":\"§c§l[False]\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/notice set " + player.getDisplayName() + " 0 " + key + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§6非表示\"}}]");
                         }
                     }
-                    player.sendMessage("§7===================================");
+                    player.sendMessage("§7======================================");
                 }else if(args.length == 2){
                     Integer nomber = null;
                     if(args[0].equalsIgnoreCase("chenge")) {
@@ -153,6 +157,21 @@ public class authorcommand {
                         }
                         player.sendMessage("§7===========================================");
                     }
+                }
+            }if(cmd.getName().equalsIgnoreCase("keizaiya")){
+                if(args.length == 2){
+                    if (args[0].equalsIgnoreCase("help")){
+                        Integer num = null;
+                        try{
+                            num = Integer.valueOf(args[1]);
+                        }catch (Exception e){
+                            player.sendMessage("数字をいれてください");
+                            return;
+                        }
+                        help.sendhelp(num,player);
+                    }
+                }if(args.length == 1){
+                    help.sendhelp(0,player);
                 }
             }
         }

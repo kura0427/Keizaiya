@@ -2,8 +2,9 @@ package keizaiya.second.file.country;
 
 import keizaiya.second.Potato;
 import keizaiya.second.author.playertelepoat;
-import keizaiya.second.file.Admin.adminfile;
+import keizaiya.second.chat.chatsiliarize;
 import keizaiya.second.file.player.Playerdata;
+import keizaiya.second.inventory.help;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.List;
 
@@ -22,20 +24,7 @@ public class countrycommand {
             Player player = (Player) sender;
             if(cmd.getName().equalsIgnoreCase("country")){
                 if(args.length == 0){
-                    player.sendMessage("§8=*=*=*= §7Help =*=*=*=\n" +
-                            "§f以下のコマンド入力で詳細を開く\n \n" +
-                            "/Country Create\n" +
-                            "/Country Invite\n" +
-                            "/Country Chat\n" +
-                            "/Country permission\n" +
-                            "/Country TP\n" +
-                            "/Country Item\n" +
-                            "/Country Remove\n" +
-                            "/Country Promote\n" +
-                            "/Country Delete\n" +
-                            "/Country Nickname\n" +
-                            "/Country religion\n" +
-                            "=*=*=*=*=*=*=*=*=*=*=");
+                    help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                 }if(args.length > 0){
                     if(args[0].equalsIgnoreCase("create")){
                         if(args.length == 3) {
@@ -43,7 +32,7 @@ public class countrycommand {
                                 Countrydata.CreateCountry(player, args[1],args[2]);
                             }
                         }if(args.length == 1){
-                        player.sendMessage("§8[§7System§8] §7/Country Create <国名> <Nickname>...国を作ります");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }else if(args.length == 2){
                             player.sendMessage("§8[§7System§8] §7Nicknameが設定されていません");
                         }
@@ -57,7 +46,7 @@ public class countrycommand {
                                 }
                             }
                         }else if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country Invite <Player>...プレイヤーを招待します");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("INconsent")){
@@ -79,7 +68,7 @@ public class countrycommand {
 
                     }if(args[0].equalsIgnoreCase("remove")){
                         if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country Remove <Player>...プレイヤーを追放、又は脱退します");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }if(args.length == 2){
                             Player player2 = null;
                             try{
@@ -147,11 +136,11 @@ public class countrycommand {
                                 playertelepoat.telepoatPlayer(player,0);
                             }if(args[1].equalsIgnoreCase("2")){
                                 playertelepoat.telepoatPlayer(player,1);
+                            }if(args[1].equalsIgnoreCase("3")){
+                                playertelepoat.telepoatPlayer(player,2);
                             }
                         }else{
-                            player.sendMessage("§8[§7System§8] §7/Country Tp Set...自国のTp地点を登録します");
-                            player.sendMessage("§8[§7System§8] §7/Country Tp 1...世界首都" + adminfile.getTPname() + "にTpします");
-                            player.sendMessage("§8[§7System§8] §7/Country Tp 2...自国にTpします");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("item")){
@@ -240,11 +229,7 @@ public class countrycommand {
                                 }
                             }
                         }else if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country Item Card <number>...証(Ideology)を手に入れます(1Point消費)");
-                            player.sendMessage("§8[§7System§8] §7/Country Item Country <number>...証(Country)を手に入れます(1Point消費)");
-                            player.sendMessage("§8[§7System§8] §7/Country Item Banner...手にある旗を16個増やします(1Point消費)");
-                            player.sendMessage("§8[§7System§8] §7/Country Item Banner get...設定した国旗を8個増やします(1Point消費)");
-                            player.sendMessage("§8[§7System§8] §7/Country Item Banner set...手に持った旗を国旗に設定します");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("delete")){
@@ -297,8 +282,7 @@ public class countrycommand {
                                 player.sendMessage("§8[§7System§8] §8プレイヤーがいません。");
                             }
                         }else if (args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country permission <Show/Permission>...権限を設定します");
-                            player.sendMessage("§8[§7System§8] §7Permission: Invite,Chat,Permission,Item,Tp,Remove");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("promote")){
@@ -333,7 +317,7 @@ public class countrycommand {
                                 player.sendMessage("§8[§7System§8] §7権限が足りません");
                             }
                         }else if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country promote <Player> ...指定したプレイヤーを国家元首にします");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("info")){
@@ -343,7 +327,7 @@ public class countrycommand {
 
                     }if(args[0].equalsIgnoreCase("nickname")){
                         if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country nickname <Countryname>...チャットに表示する国名を設定します(最大8文字)");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }else if(args.length == 2){
                             if(Countrydata.checkpermission(player,"head")) {
                                 Countrydata.setnickname(Playerdata.getNowCountry(player), args[1]);
@@ -369,12 +353,12 @@ public class countrycommand {
                                 }
                             }
                         }else if(args.length == 1){
-                            player.sendMessage("§8[§7System§8] §7/Country chat <役職名> <Player>...国内チャットのPrefixを変更します");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }
 
                     }if(args[0].equalsIgnoreCase("religion")){
                         if(args.length ==1){
-                            player.sendMessage("§8[§7System§8] §7/Country religion <Religionname>...国の宗教を設定します　設定の際は宗教変更カードを手に持つ必要があります");
+                            help.sendtellraw(player,help.gettellrawtocommand("詳細はヘルプで確認できます。(Clickhere)","/keizaiya help 1"));
                         }else if(args.length == 2){
                             if(Countrydata.checkpermission(player,"head")){
                                 if(player.getInventory().getItemInMainHand() != null) {
@@ -390,6 +374,72 @@ public class countrycommand {
                                 }
                             }else{
                                 player.sendMessage("§8[§7System§8] §7あなたには権限がありません");
+                            }
+                        }
+                    }if(args[0].equalsIgnoreCase("repuest")){
+                        if(Countrydata.checkpermission(player,"invite")){
+                            String tag = Playerdata.getNowCountry(player);
+                            if(Countrydata.repuestlist.containsKey(tag)){
+                                List<Player> data = Countrydata.repuestlist.get(tag);
+                                player.sendMessage("リクエストリスト");
+                                for(Player player1 : data){
+                                    chatsiliarize.sendrepuest(player,player1);
+                                }
+                                player.sendMessage("=======================");
+                            }else{
+                                player.sendMessage("リクエストされてません。");
+                            }
+                        }else{
+                            if(args.length == 2){
+                                String name = Countrydata.getTAG(args[1]);
+                                if(name != null){
+                                    if(Countrydata.getOnlinemember(name).contains(player) == false){
+                                        Countrydata.addrepuest(name,player);
+                                        player.sendMessage("リクエストしました。");
+                                    }else{
+                                        player.sendMessage("すでに国に入っています。");
+                                    }
+                                }else{
+                                    player.sendMessage("指定した国がありません。");
+                                }
+                            }
+                        }
+                    }if(args[0].equalsIgnoreCase("repuestok")){
+                        if(args.length >= 2){
+                            if(Countrydata.checkpermission(player,"invite")) {
+                                String tag = Playerdata.getNowCountry(player);
+                                if (Countrydata.repuestlist.containsKey(tag)) {
+                                    List<Player> data = Countrydata.repuestlist.get(tag);
+                                    Player player2 = null;
+                                    for (Player player1 : data) {
+                                        if(player1.getName().contains(args[1])){
+                                            player2 = player1;
+                                        }
+                                    }
+                                    if(player2 != null){
+                                        if(args.length == 3){
+                                            Countrydata.removerepuest(tag,player2);
+                                            player.sendMessage(player2.getDisplayName() + " リクエストを拒否しました。");
+                                        }else{
+                                            Boolean ok = true;
+                                            for(int i = 1; i<=3;i++){
+                                                if(Playerdata.getCountrytag(player2,i).contains("null")){
+                                                    Countrydata.addmember(tag,player2);
+                                                    Countrydata.removerepuest(tag,player2);
+                                                    Playerdata.setCountrytag(player2,i,tag);
+                                                    player.sendMessage(player2.getDisplayName() + " を参加させました。");
+                                                    ok = false;
+                                                    break;
+                                                }
+                                            }
+                                            if(ok){
+                                                player.sendMessage(player2.getDisplayName() + "の空いているアカウントがないので参加させりません");
+                                            }
+                                        }
+                                    }
+                                }
+                            }else {
+                                player.sendMessage("権限がありません。");
                             }
                         }
                     }

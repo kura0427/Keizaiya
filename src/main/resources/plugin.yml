@@ -42,6 +42,12 @@ commands:
   notice:
     description: "通知関連コマンド"
     usage: /<command>
+  keizaiya:
+    description: "通知関連コマンド"
+    usage: /<command>
+  channel:
+    description: "通知関連コマンド"
+    usage: /<command>
   test:
     description: "テストコマンド(プラグイン開発用)"
     usage: /<command>

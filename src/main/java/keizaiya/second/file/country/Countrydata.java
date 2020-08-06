@@ -13,11 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Countrydata {
+
+    public static Map<String,List<Player>> repuestlist = new HashMap<>();
 
     public static boolean CreateCountry(Player player, String Name , String nickname){
         CheckFile();
@@ -99,7 +99,7 @@ public class Countrydata {
         if(Potato.countrylist != null) {
             if (Potato.countrylist.size() != 0) {
                 for (String Key : Potato.countrylist.keySet()) {
-                    if (Potato.countrylist.get(Key) == CountyNamoe) {
+                    if (Potato.countrylist.get(Key).contains(CountyNamoe)) {
                         return Key;
                     }
                 }
@@ -458,7 +458,6 @@ public class Countrydata {
                 list.add(name);
             }
         }
-        System.out.println(list);
         return list;
     }
 
@@ -521,6 +520,40 @@ public class Countrydata {
         YamlConfiguration yml = loadCountry(tag);
         yml.set("TPsize",size);
         savecounty(tag,yml);
+    }
+
+    public static List<String> getTPsizelist(String tag){
+        Integer tpsize = getTPsize(tag);
+        List<String> tplist = new ArrayList<>();
+        for(int i = 0 ; tpsize >= i ; i++){
+            tplist.add(String.valueOf(i));
+        }
+        return tplist;
+
+    }
+
+    public static boolean addrepuest(String tag , Player player){
+        if(getOnlinemember(tag).contains(player) == false){
+            List<Player> list = new ArrayList<>();
+            if(repuestlist.containsKey(tag)){
+                if(repuestlist.get(tag).contains(player)){ return true;}
+                list = repuestlist.get(tag);
+            }
+            list.add(player);
+            repuestlist.put(tag,list);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean removerepuest(String tag,Player player){
+        if(repuestlist.containsKey(tag)){
+            if(repuestlist.get(tag).contains(player)){
+                repuestlist.get(tag).remove(player);
+                return true;
+            }
+        }
+        return false;
     }
 
 

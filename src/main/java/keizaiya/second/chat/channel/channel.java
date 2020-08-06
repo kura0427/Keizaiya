@@ -1,7 +1,8 @@
-package keizaiya.second.chat;
+package keizaiya.second.chat.channel;
 
 import keizaiya.second.Potato;
 import keizaiya.second.file.Yamlfile;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -11,8 +12,9 @@ import java.util.*;
 
 public class channel {
 
-    public static Map<String,channeldata> list = new HashMap<>();
+    public static Map<String, channeldata> list = new HashMap<>();
     public static Map<String,String> taglist = new HashMap<>();
+    public static Map<String,List<Player>> invite = new HashMap<>();
 
     public static boolean Createchannel(Player player, String Name ){
         CheckFile();
@@ -61,7 +63,6 @@ public class channel {
                 channeldata data = new channeldata(yml.getString("name"), yml.getString("owner"),
                         tag, yml.getStringList("member"));
                 list.put(tag, data);
-                System.out.println(data.getname());
             }
         }
     }
@@ -121,4 +122,60 @@ public class channel {
         updatechannel();
     }
 
+    public static List<Player> getOnlinePlayer(String tag){
+        if(list.containsKey(tag)){
+            channeldata data = list.get(tag);
+            List<Player> players = new ArrayList<>();
+            for(Player player : Bukkit.getOnlinePlayers()){
+                if(data.getMember().contains(player.getUniqueId().toString())){
+                    players.add(player);
+                }
+            }
+            return players;
+        }
+        return null;
+    }
+
+    public static String getchanneltag(Integer ints){
+        System.out.println(ints);
+        for(String key : list.keySet()){
+            System.out.println(list.get(key).getModenum());
+            if(list.get(key).getModenum().equals(ints)){
+                return key;
+            }
+        }
+        return null;
+    }
+
+    public static void addinvite(String tag , String name){
+        if(list.containsKey(tag)){
+            Player player = Bukkit.getPlayer(name);
+            if(player != null){
+                List<Player> data = new ArrayList<>();
+                if(invite.containsKey(tag)){
+                    data = invite.get(tag);
+                }
+                data.add(player);
+                invite.put(tag,data);
+            }
+        }
+    }
+
+    public static void removeinvite(String tag , String name){
+        if(list.containsKey(tag)){
+            Player player = Bukkit.getPlayer(name);
+            if(player != null){
+                List<Player> data = new ArrayList<>();
+                if(invite.containsKey(tag)){
+                    data = invite.get(tag);
+                    data.remove(player);
+                }
+                invite.put(tag,data);
+            }
+        }
+    }
+
+    public static channeldata getvalum(String key){
+        return list.get(key);
+    }
 }

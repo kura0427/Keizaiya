@@ -9,6 +9,7 @@ import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.item;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
+import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -341,7 +342,8 @@ public class Admin {
                                     "/Admin Country setreligion <religionname> <Countrytag> ...指定した国の宗教を設定します\n" +
                                     "/Admin Country getreligioncard ...宗教変更カードをだします\n" +
                                     "/Admin Country tp <Countrytag> ... 指定した国のTPpointにTP\n" +
-                                    "/Admin country banner <Countrytag> ...指定した国の旗を入手");
+                                    "/Admin country banner <Countrytag> ...指定した国の旗を入手\n" +
+                                    "/Admin country settpmax <Countrytag> <Nomber> ...指定した国の最大テレポート数を設定します");
                         }
                     }if(args[0].equalsIgnoreCase("item")) {
                         if(args.length >= 2){
@@ -487,6 +489,12 @@ public class Admin {
                                     "/admin announce list ... 現在稼働しているアナウンスの管理番号を表示させます\n" +
                                     "/admin announce remove <nomber> ... 指定したアナウンスを消去します\n" +
                                     "/admin announce setjoinmessage <message1> <message2> ...プレイヤー参加時のお知らせを設定します");
+                        }
+                    }if(args[0].equalsIgnoreCase("give")) {
+                        if(args.length == 2){
+                            if(args[1].equalsIgnoreCase("Super_Pickaxe")){
+                                player.getInventory().addItem(superpixcel.getitem());
+                            }
                         }
                     }
                 }

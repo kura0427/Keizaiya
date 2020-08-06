@@ -45,6 +45,8 @@ public class admincommandtab implements TabCompleter {
                     cmdlist.add("villager");
                 }if("announce".contains(args[0])) {
                     cmdlist.add("announce");
+                }if("give".contains(args[0])) {
+                    cmdlist.add("give");
                 }
                 return cmdlist;
             }else if(args.length >= 2){
@@ -117,10 +119,13 @@ public class admincommandtab implements TabCompleter {
                             cmdlist.add("tp");
                         }if("banner".contains(args[1])) {
                             cmdlist.add("banner");
+                        }if("settpmax".contains(args[1])) {
+                            cmdlist.add("settpmax");
                         }
                         return cmdlist;
                     }else if(args.length == 3){
-                        if(args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("getpoint")){
+                        if(args[1].equalsIgnoreCase("info") || args[1].equalsIgnoreCase("getpoint")
+                        || args[1].equalsIgnoreCase("settpmax")){
                             return Countrydata.gettaglist();
                         }if(args[1].equalsIgnoreCase("addmember") || args[1].equalsIgnoreCase("removemember")
                                 || args[1].equalsIgnoreCase("sethead")){
@@ -194,6 +199,11 @@ public class admincommandtab implements TabCompleter {
                             return cmdlist;
                         }
                     }
+                }else if(args[0].equalsIgnoreCase("give")){
+                    if("Super_Pickaxe".contains(args[1])) {
+                        cmdlist.add("Super_Pickaxe");
+                    }
+                    return cmdlist;
                 }
             }
         }

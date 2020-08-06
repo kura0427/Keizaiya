@@ -32,4 +32,12 @@ public class chatsiliarize {
                         ",{\"text\":\"   \"}" +
                         ",{\"text\":\"§c§l[拒否]\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/country INconsent cancel\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§6招待をキャンセルします\"}}]");
     }
+
+    public static void sendrepuest(Player player , Player player2){
+        Bukkit.getServer().dispatchCommand(
+                Bukkit.getConsoleSender(),"tellraw " + player.getDisplayName() + " [ {\"text\":\"§7 " + player2.getName() +  "  \"}," +
+                        "{\"text\":\"§b§l[許可]\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/country repuestok " + player2.getDisplayName() + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§3国に参加させます\"}}" +
+                        ",{\"text\":\"   \"}" +
+                        ",{\"text\":\"§c§l[拒否]\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/country repuestok " + player2.getDisplayName() + " cancel\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§3拒否させます\"}}]");
+    }
 }
