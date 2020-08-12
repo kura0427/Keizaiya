@@ -17,9 +17,12 @@ import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.point;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
+import keizaiya.second.file.shop.shop;
 import keizaiya.second.inventory.menu;
 import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -38,11 +41,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.util.*;
+
 
 public final class Potato extends JavaPlugin implements Listener {
 
@@ -76,6 +79,7 @@ public final class Potato extends JavaPlugin implements Listener {
         channel.CheckFile();
         chengewoad.checkfile();
         channel.updatechannel();
+        shop.updatefile();
 
         try {
             ServerSocket socket = new ServerSocket(36846);
@@ -86,6 +90,7 @@ public final class Potato extends JavaPlugin implements Listener {
 
         tuusins = tuusin.startcom();
         tuusins.start();
+        tuusin.checktps();
 
         getServer().getPluginManager().registerEvents(this,this);
 
@@ -96,6 +101,9 @@ public final class Potato extends JavaPlugin implements Listener {
         // Plugin shutdown logic
         tuusin.stop = true;
         tuusins.stop();
+        if(tuusin.kidou){
+            tuusin.sendserver("server&close@");
+        }
         if(tuusin.socket != null){
             try {
                 tuusin.socket.close();
@@ -145,6 +153,13 @@ public final class Potato extends JavaPlugin implements Listener {
         authorclick.authorclick(e);
         armmy.used(e);
         armmer.click(e);
+        if(e.getClickedBlock() != null) {
+            if (e.getClickedBlock().getType().equals(Material.CHEST)) {
+                Chest chest = (Chest) e.getClickedBlock().getState();
+                e.getPlayer().openInventory(chest.getInventory());
+                System.out.println(chest);
+            }
+        }
     }
 
     @EventHandler
@@ -183,24 +198,50 @@ public final class Potato extends JavaPlugin implements Listener {
         authorcommand.onauthorcommnand(sender,cmd,commandLabel,args);
         chatcommand.onauthorcommnand(sender,cmd,commandLabel,args);
         channelcom.onchannelcommnand(sender,cmd,commandLabel,args);
+        shop.onCommand(sender,cmd,commandLabel,args);
         if(sender instanceof Player){
             Player p = (Player) sender;
             if(cmd.getName().equalsIgnoreCase("menu")) {
                 if (sender instanceof Player) {
                     menu.opengui(p);
                 }
-            }if(cmd.getName().equalsIgnoreCase("test")){
-                p.getInventory().addItem(superpixcel.getitem());
-                InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
-                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-                YamlConfiguration yml = new YamlConfiguration();
-                try {
-                    yml.load(br);
-                    music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InvalidConfigurationException e) {
-                    e.printStackTrace();
+            }if(cmd.getName().equalsIgnoreCase("test")) {
+                if (args.length == 0) {
+                    InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
+                    BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                    YamlConfiguration yml = new YamlConfiguration();
+                    try {
+                        yml.load(br);
+                        music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InvalidConfigurationException e) {
+                        e.printStackTrace();
+                    }
+                }else if(args.length == 1){
+                    //InputStream stream = Potato.clname.getResourceAsStream("/sample/Avicii-Waiting_for_love.yml");
+                    File file = new File("KeizaiyaMain/Avicii-Waiting_for_love.yml");
+                    //BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                    YamlConfiguration yml = new YamlConfiguration();
+                    try {
+                        yml.load(file);
+                        music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InvalidConfigurationException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    File file = new File("KeizaiyaMain/test.yml");
+                    YamlConfiguration yml = new YamlConfiguration();
+                    try {
+                        yml.load(file);
+                        music.music(yml, (List<Player>) Bukkit.getOnlinePlayers());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InvalidConfigurationException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

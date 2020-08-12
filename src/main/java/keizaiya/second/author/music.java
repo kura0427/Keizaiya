@@ -20,7 +20,9 @@ public class music {
         setdata();
         Integer yeah = yml.getInt("tick");
         String data = yml.getString("data");
-        String[] data2 = data.split(";");
+        data = data.replaceAll("[\r \n]", "");
+        String[] data2 = data.split("[;(){}]");
+        System.out.println(data);
         new BukkitRunnable(){
             String[] maindata = data2;
             List<Player> playermainlist = playerList;
@@ -31,6 +33,7 @@ public class music {
                     String[] lowdata2 = data2[now].split(":");
                     for (String hightdata : lowdata2) {
                         String[] hightdata2 = hightdata.split(",");
+                        System.out.println(hightdata);
                         if (hightdata2.length == 3) {
                             try {
                                 Integer data01 = Integer.parseInt(hightdata2[1]);
@@ -38,7 +41,7 @@ public class music {
                                 Float valum = Float.valueOf(hightdata2[2]) / 100;
                                 Sound gakkisan = gakki.get(hightdata2[0]);
                                 for (Player player : playermainlist) {
-                                    player.playSound(player.getLocation(), gakkisan, SoundCategory.BLOCKS, (float)valum, (float)pith2);
+                                    player.playSound(player.getLocation(), gakkisan, SoundCategory.MUSIC, (float)valum, (float)pith2);
                                 }
                             } catch (Exception e) { }
                         }
@@ -53,23 +56,29 @@ public class music {
 
     public static void setdata(){
         pith.clear();
-        pith.put(0, (float) 0.5);pith.put(13, (float) 1.05);
-        pith.put(1, (float) 0.53);pith.put(14, (float) 1.12);
-        pith.put(2, (float) 0.56);pith.put(15, (float) 1.18);
-        pith.put(3, (float) 0.59);pith.put(16, (float) 1.25);
-        pith.put(4, (float) 0.63);pith.put(17, (float) 1.33);
-        pith.put(5, (float) 0.67);pith.put(18, (float) 1.41);
-        pith.put(6, (float) 0.71);pith.put(19, (float) 1.5);
-        pith.put(7, (float) 0.74);pith.put(20, (float) 1.6);
-        pith.put(8, (float) 0.79);pith.put(21, (float) 1.68);
-        pith.put(9, (float) 0.84);pith.put(22, (float) 1.78);
-        pith.put(10, (float) 0.88);pith.put(23, (float) 1.89);
-        pith.put(11, (float) 0.93);pith.put(24, (float) 2.0);
-        pith.put(12, (float) 0.99);
+        pith.put(0, (float) 0.5);pith.put(13, (float) 1.059463);
+        pith.put(1, (float) 0.529732);pith.put(14, (float) 1.122462);
+        pith.put(2, (float) 0.561231);pith.put(15, (float) 1.189207);
+        pith.put(3, (float) 0.594604);pith.put(16, (float) 1.259921);
+        pith.put(4, (float) 0.629961);pith.put(17, (float) 1.334840);
+        pith.put(5, (float) 0.667420);pith.put(18, (float) 1.414214);
+        pith.put(6, (float) 0.707107);pith.put(19, (float) 1.498307);
+        pith.put(7, (float) 0.749154);pith.put(20, (float) 1.587401);
+        pith.put(8, (float) 0.793701);pith.put(21, (float) 1.681793);
+        pith.put(9, (float) 0.840896);pith.put(22, (float) 1.781797);
+        pith.put(10, (float) 0.890899);pith.put(23, (float) 1.887749);
+        pith.put(11, (float) 0.943874);pith.put(24, (float) 2.0);
+        pith.put(12, (float) 1);
 
         gakki.clear();
         gakki.put("CC",Sound.BLOCK_NOTE_BLOCK_CHIME);
         gakki.put("DC",Sound.BLOCK_NOTE_BLOCK_HARP);
+        gakki.put("FL",Sound.BLOCK_NOTE_BLOCK_FLUTE);
+        gakki.put("SD",Sound.BLOCK_NOTE_BLOCK_SNARE);
+        gakki.put("BS",Sound.BLOCK_NOTE_BLOCK_BASS);
+        gakki.put("BD",Sound.BLOCK_NOTE_BLOCK_BASEDRUM);
+        gakki.put("CS",Sound.BLOCK_NOTE_BLOCK_HAT);
+        gakki.put("BE",Sound.BLOCK_NOTE_BLOCK_BELL);
 
     }
 }
