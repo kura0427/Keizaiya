@@ -377,17 +377,21 @@ public class countrycommand {
                             }
                         }
                     }if(args[0].equalsIgnoreCase("repuest")){
-                        if(Countrydata.checkpermission(player,"invite")){
-                            String tag = Playerdata.getNowCountry(player);
-                            if(Countrydata.repuestlist.containsKey(tag)){
-                                List<Player> data = Countrydata.repuestlist.get(tag);
-                                player.sendMessage("リクエストリスト");
-                                for(Player player1 : data){
-                                    chatsiliarize.sendrepuest(player,player1);
+                        if(Playerdata.getNowCountry(player).contains("null") == false){
+                            if(Countrydata.checkpermission(player,"invite")) {
+                                String tag = Playerdata.getNowCountry(player);
+                                if (Countrydata.repuestlist.containsKey(tag)) {
+                                   List<Player> data = Countrydata.repuestlist.get(tag);
+                                   player.sendMessage("リクエストリスト");
+                                    for (Player player1 : data) {
+                                        chatsiliarize.sendrepuest(player, player1);
+                                    }
+                                    player.sendMessage("=======================");
+                                } else {
+                                    player.sendMessage("リクエストされてません。");
                                 }
-                                player.sendMessage("=======================");
-                            }else{
-                                player.sendMessage("リクエストされてません。");
+                            }else {
+                                player.sendMessage("放浪者アカウントで行ってください。");
                             }
                         }else{
                             if(args.length == 2){

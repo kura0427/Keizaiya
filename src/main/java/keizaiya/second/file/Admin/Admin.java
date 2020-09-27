@@ -4,11 +4,13 @@ import keizaiya.second.Potato;
 import keizaiya.second.armmy.armmy;
 import keizaiya.second.chat.chat;
 import keizaiya.second.chat.chengewoad;
+import keizaiya.second.connection.tuusin;
 import keizaiya.second.file.country.Countrydata;
 import keizaiya.second.file.country.ideology;
 import keizaiya.second.file.country.item;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
+import keizaiya.second.inventory.help;
 import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -496,6 +498,20 @@ public class Admin {
                                 player.getInventory().addItem(superpixcel.getitem());
                             }
                         }
+                    }if(args[0].equalsIgnoreCase("startserver")){
+                        player.sendMessage("readyserverconnerct");
+                        if(keizaiya.second.connection.config.TCPconfig.getBoolean("enable")) {
+                            if(tuusin.kidou == false) {
+                                Potato.tuusins = tuusin.startcom();
+                                Potato.tuusins.start();
+                                tuusin.checktps();
+                                player.sendMessage("start progrom");
+                            }else {
+                                player.sendMessage("すでに起動なう");
+                            }
+                        }
+                    }if(args[0].equalsIgnoreCase("help")){
+                        help.sendhelp(1000,player);
                     }
                 }
             }

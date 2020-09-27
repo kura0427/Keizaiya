@@ -47,6 +47,8 @@ public class admincommandtab implements TabCompleter {
                     cmdlist.add("announce");
                 }if("give".contains(args[0])) {
                     cmdlist.add("give");
+                }if("help".contains(args[0])) {
+                    cmdlist.add("help");
                 }
                 return cmdlist;
             }else if(args.length >= 2){

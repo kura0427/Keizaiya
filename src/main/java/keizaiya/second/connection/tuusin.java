@@ -1,7 +1,6 @@
 package keizaiya.second.connection;
 
 import com.google.gson.Gson;
-import com.sun.corba.se.impl.oa.toa.TOA;
 import keizaiya.second.Potato;
 import keizaiya.second.file.Yamlfile;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.channels.FileLock;
-import java.util.ArrayList;
 import java.util.List;
 
 public class tuusin {
@@ -23,16 +20,19 @@ public class tuusin {
     private static InputStream in;
     public static Socket socket;
     public static boolean kidou = false;
+    public static String bot = "";
 
     public static Thread startcom(){
         System.out.println("立ち上げました");
+        YamlConfiguration yml = config.TCPconfig;
+        bot = yml.getString("bot");
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (stop == false) {
                     long Time =  System.currentTimeMillis();
                     try {
-                        Socket socket = new Socket("192.168.10.145",42732);
+                        Socket socket = new Socket(yml.getString("ServerAdd"),yml.getInt("Serverpoat"));
                         in = socket.getInputStream();
                         out = socket.getOutputStream();
                         sendserver("server&close@");
@@ -59,7 +59,7 @@ public class tuusin {
                                         if(yeah.length == 2){
                                             if(yeah[1].equalsIgnoreCase("account.request")){
                                                 System.out.println("yeah");
-                                                sendserver("{name: 'Keizaiyaplugin' , pass: 'i-01i-4jd8a9sy831-4kda-sklpkpads9'}@");
+                                                sendserver("{name: '"+ yml.getString("account") +"' , pass: '"+ yml.getString("pass") +"'}@");
                                             }else if(yeah[1].equalsIgnoreCase("pass clear")){
                                                 System.out.println("サーバーとの接続しました。");
                                                 kidou = true;
@@ -69,16 +69,25 @@ public class tuusin {
                                             }else if(yeah[1].equalsIgnoreCase("used account")){
                                                 System.out.println("アカウントが使われてます。");
                                                 kidou = false;
+                                                close();
                                             }
                                         }
-                                    }else if(yeah[0].equalsIgnoreCase("discord_BOT_for_POTATO_WARS")){
-                                        
+                                    }else if(yeah[0].equalsIgnoreCase(bot)){
+                                        botdata datas = gson.fromJson(yeah[1],botdata.class);
+                                        if(datas != null){
+                                            if(datas.getRequest().equalsIgnoreCase("serverinfo")){
+                                                serverinfo info = getinfo();
+                                                info.setId(datas.getid());
+                                                String datae = gson.toJson(info);
+                                                sendserver(getBotsend(datae));
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("停止。");
                         kidou = false;
                         try {
                             socket.close();
@@ -144,7 +153,7 @@ public class tuusin {
     }
 
     public static String getBotsend(String data){
-        String str = "discord_BOT_for_POTATO_WARS&" + data + "@";
+        String str = bot + "&" + data + "@";
         return str;
     }
 

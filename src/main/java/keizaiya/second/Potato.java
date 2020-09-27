@@ -18,11 +18,11 @@ import keizaiya.second.file.country.point;
 import keizaiya.second.file.player.Playerdata;
 import keizaiya.second.file.servermember;
 import keizaiya.second.file.shop.shop;
+import keizaiya.second.file.shop.shoptab;
+import keizaiya.second.file.shop.stickmenu;
 import keizaiya.second.inventory.menu;
 import keizaiya.second.item.superpixcel;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -73,6 +73,7 @@ public final class Potato extends JavaPlugin implements Listener {
         getCommand("country").setTabCompleter(new commandtab());
         getCommand("admin").setTabCompleter(new admincommandtab());
         getCommand("channel").setTabCompleter(new channelcomtab());
+        getCommand("shop").setTabCompleter(new shoptab());
 
         point.updatelist();
         adminfile.checkAdmindata();
@@ -88,9 +89,14 @@ public final class Potato extends JavaPlugin implements Listener {
             e.printStackTrace();
         }
 
-        tuusins = tuusin.startcom();
-        tuusins.start();
-        tuusin.checktps();
+        keizaiya.second.connection.config.loadfile();
+        if(keizaiya.second.connection.config.TCPconfig.getBoolean("enable")) {
+            tuusins = tuusin.startcom();
+            tuusins.start();
+            tuusin.checktps();
+        }else {
+            System.out.println("サーバー通信がオフです");
+        }
 
         getServer().getPluginManager().registerEvents(this,this);
 
@@ -133,6 +139,7 @@ public final class Potato extends JavaPlugin implements Listener {
     public void onPlayerClickInventory(InventoryClickEvent e){
         if(e.getView().getTitle() == "Menu"){ menu.clickmenu(e); }
         if(e.getView().getTitle() == "Channel"){ channelmenu.clickmenu(e); }
+        stickmenu.clickmenu(e);
     }
 
     @EventHandler
@@ -146,6 +153,7 @@ public final class Potato extends JavaPlugin implements Listener {
             Countrydata.addBreakblock(Playerdata.getNowCountry(event.getPlayer()),event.getPlayer());
         }
         superpixcel.breakblocktoSP(event);
+        stickmenu.bb(event);
     }
     @EventHandler
     public void click(PlayerInteractEvent e){
@@ -153,13 +161,7 @@ public final class Potato extends JavaPlugin implements Listener {
         authorclick.authorclick(e);
         armmy.used(e);
         armmer.click(e);
-        if(e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType().equals(Material.CHEST)) {
-                Chest chest = (Chest) e.getClickedBlock().getState();
-                e.getPlayer().openInventory(chest.getInventory());
-                System.out.println(chest);
-            }
-        }
+        stickmenu.clickEvent(e);
     }
 
     @EventHandler
@@ -207,6 +209,7 @@ public final class Potato extends JavaPlugin implements Listener {
                 }
             }if(cmd.getName().equalsIgnoreCase("test")) {
                 if (args.length == 0) {
+                    System.out.println(p.getInventory().getItemInMainHand());
                     InputStream stream = Potato.clname.getResourceAsStream("/sample/Meitetu.yml");
                     BufferedReader br = new BufferedReader(new InputStreamReader(stream));
                     YamlConfiguration yml = new YamlConfiguration();

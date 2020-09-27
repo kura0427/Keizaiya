@@ -3,7 +3,6 @@ package keizaiya.second.file.shop;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 
@@ -16,6 +15,7 @@ public class shopdata {
     private ItemStack give;
     private Integer giveaom;
     private String tag;
+    private Location kanban;
 
     public shopdata(String uuid, String passs, String tags){
         owner = uuid;
@@ -26,6 +26,7 @@ public class shopdata {
         give = new ItemStack(Material.AIR);
         giveaom = 0;
         location = new Location(Bukkit.getWorlds().get(0),0,0,0);
+        kanban = new Location(Bukkit.getWorlds().get(0),0,0,0);
     }
 
     public void setLocation(Location locations){
@@ -46,6 +47,7 @@ public class shopdata {
     public void setGiveaom(Integer integer){
         giveaom = integer;
     }
+    public void setKanban(Location data){ kanban = data;}
 
     public String getOwner(){
         return owner;
@@ -62,15 +64,14 @@ public class shopdata {
     public Integer getProductaom(){
         return productaom;
     }
-    public ItemStack getGive(){
-        return give;
-    }
+    public ItemStack getGive(){ return give; }
     public Integer getGiveaom(){
         return giveaom;
     }
     public Location getLocation(){
         return location;
     }
+    public Location getKanban(){ return kanban;}
 
 
 

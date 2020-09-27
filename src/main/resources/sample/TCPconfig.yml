@@ -1,0 +1,15 @@
+#サーバーアドレス
+ServerAdd: "kura-LiserCraudia0505.f5.si"
+#サーバーポート
+Serverpoat: 42732
+
+#起動するかどうか
+enable: True
+
+#アカウント
+account: "Keizaiyaplugin"
+#パスワード
+pass: "i-01i-4jd8a9sy831-4kda-sklpkpads9"
+
+#bot
+bot: "discord_BOT_for_POTATO_WARS"

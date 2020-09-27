@@ -48,7 +48,7 @@ commands:
   channel:
     description: "通知関連コマンド"
     usage: /<command>
-  chestshop:
+  shop:
     description: "チェストショップ"
     usage: /<command>
   test:
